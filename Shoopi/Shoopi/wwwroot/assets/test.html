@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Apples</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+}
+
+.product-container {
+    display: flex;
+    background: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    max-width: 800px;
+    width: 100%;
+}
+
+.image-container {
+    flex: 1;
+}
+
+.image-container img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.product-details {
+    flex: 2;
+    padding-left: 20px;
+}
+
+.product-details h1 {
+    font-size: 24px;
+    margin: 0 0 10px;
+}
+
+.price {
+    font-size: 20px;
+    color: #ff6347;
+    margin: 10px 0;
+}
+
+.description {
+    font-size: 16px;
+    color: #333;
+    margin: 20px 0;
+}
+
+input[type="number"] {
+    width: 50px;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #ff6347;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #ff4500;
+}
+
+.categories {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.share {
+    margin-top: 20px;
+}
+
+.share p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.share a {
+    margin-right: 10px;
+}
+
+.share img {
+    width: 24px;
+    height: 24px;
+}
+
+</style>
+<body>
+    <div class="product-container">
+        <div class="image-container">
+            <img src="path/to/your/green-apple-image.jpg" alt="Green Apple">
+        </div>
+        <div class="product-details">
+            <h1>@Model.Watches.FullName</h1>
+            <p class="price">@Model.Watches.Condition</p>
+            <p class="price">@Model.Watches.Price - @Model.Watches.EstimatePrice </p>
+            <p class="description">@Model.Watches.Condition</p>
+            <input type="number" value="0" min="0">
+            <button>Add to Cart</button>
+            <p class="categories">Brand:  Fruits, Organic</p>
+            <div class="share">
+                <p>Share:</p>
+                <a href="#"><img src="path/to/facebook-icon.png" alt="Facebook"></a>
+                <a href="#"><img src="path/to/twitter-icon.png" alt="Twitter"></a>
+                <a href="#"><img src="path/to/google-plus-icon.png" alt="Google Plus"></a>
+                <a href="#"><img src="path/to/linkedin-icon.png" alt="LinkedIn"></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

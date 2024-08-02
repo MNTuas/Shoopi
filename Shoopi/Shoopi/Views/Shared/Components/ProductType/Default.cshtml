@@ -1,0 +1,20 @@
+﻿@model IEnumerable<Shoopi.ViewModels.ProductTypeVM>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="product-filters">
+            
+            <ul>
+                <li class="active" data-filter="*">
+                    <a asp-controller="Product" asp-action="Index">All</a>
+                </li>
+                @foreach (var item in Model)
+                {
+                <a asp-controller="Product" asp-action="Index" asp-route-type="@item.TypeID">
+                <li data-filter=".strawberry">@item.TypeName (@item.Quantity)</li>
+                </a>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
