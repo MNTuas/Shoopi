@@ -1,3 +1,5 @@
+using Repository;
+using Repository.IRepository;
 using Shoopi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ShoopiContext>();
+builder.Services.AddScoped<IProduct,ProductRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

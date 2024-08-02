@@ -18,6 +18,10 @@
 
         public int? ViewNumber { get; set; }
 
+        public int? TotalPages { get; set; }
+
+        public int? PageIndex { get; set; }
+
         
     }
 }
