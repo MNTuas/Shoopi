@@ -1,5 +1,6 @@
 ﻿using DAO;
 using Repository.IRepository;
+using Shoopi.Data;
 using Shoopi.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,14 +13,14 @@ namespace Repository
 {
 	public class ProductRepository : IProduct
 	{
-		public async Task<List<ProductVM>> GetList(int? type)
+		public Task<Product> GetProductById(int id)
 		{
-			return await ProductDAO.Instance.GetList(type);
+			return ProductDAO.Instance.GetProductById(id);
 		}
 
-		public Task<List<ProductVM>> GetProducts(int? type, string query)
+		public async Task<List<Product>> GetProducts(int? type, string query)
 		{
-			return ProductDAO.Instance.GetProducts(type, query);
+			return await ProductDAO.Instance.GetProducts(type, query);
 		}
 	}
 }

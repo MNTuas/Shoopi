@@ -1,4 +1,5 @@
-﻿using Shoopi.ViewModels;
+﻿using Shoopi.Data;
+using Shoopi.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,8 @@ namespace Repository.IRepository
 {
 	public interface IProduct
 	{
-		Task<List<ProductVM>> GetList(int? type);
-		Task<List<ProductVM>> GetProducts(int? type, string query);
+		Task<List<Product>> GetProducts(int? type, string query);
+		Task<Product> GetProductById(int id);
 
 	}
 }
