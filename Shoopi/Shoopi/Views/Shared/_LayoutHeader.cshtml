@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Shoopi.ViewModels.ProductVM>
+﻿
 <!DOCTYPE html>
 
 <html>
@@ -48,7 +48,7 @@
 					<div class="main-menu-wrap">
 						<!-- logo -->
 						<div class="site-logo">
-							<a href="index.html">
+							<a asp-controller ="Home" asp-action="Index">
 								<h1 style="color:orangered">Shoopi</h1>
 							</a>
 						</div>
@@ -132,17 +132,17 @@
 	<!-- end search area -->
 	<!-- home page slider -->
 	<div class="homepage-slider">
-		<!-- single home slider -->
+		<!-- single home slider 1 -->
 		<div class="single-homepage-slider homepage-bg-1">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
 						<div class="hero-text">
 							<div class="hero-text-tablecell">
-								<p class="subtitle">Fresh & Organic</p>
-								<h1>Delicious Seasonal Fruits</h1>
+								<p class="subtitle">Cute & Funny</p>
+								<h1>Stupid cat meme</h1>
 								<div class="hero-btns">
-									<a href="shop.html" class="boxed-btn">Fruit Collection</a>
+									<a asp-controller="Product" class="boxed-btn">Cat Meme Collection</a>
 									<a href="contact.html" class="bordered-btn">Contact Us</a>
 								</div>
 							</div>
@@ -151,15 +151,15 @@
 				</div>
 			</div>
 		</div>
-		<!-- single home slider -->
+		<!-- single home slider 2 -->
 		<div class="single-homepage-slider homepage-bg-2">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-10 offset-lg-1 text-center">
 						<div class="hero-text">
 							<div class="hero-text-tablecell">
-								<p class="subtitle">Fresh Everyday</p>
-								<h1>100% Organic Collection</h1>
+								<p class="subtitle">Funny Everyday</p>
+								<h1>100% Cat Collection</h1>
 								<div class="hero-btns">
 									<a href="shop.html" class="boxed-btn">Visit Shop</a>
 									<a href="contact.html" class="bordered-btn">Contact Us</a>
@@ -170,7 +170,7 @@
 				</div>
 			</div>
 		</div>
-		<!-- single home slider -->
+		<!-- single home slider 2 -->
 		<div class="single-homepage-slider homepage-bg-3">
 			<div class="container">
 				<div class="row">

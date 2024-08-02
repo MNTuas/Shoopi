@@ -19,11 +19,11 @@ namespace DAO
 			_context = new ShoopiContext();
 		}
 
-		public static ProductDAO Instance 
+		public static ProductDAO Instance
 		{
 			get
 			{
-				if(instance == null)
+				if (instance == null)
 				{
 					instance = new ProductDAO();
 				}
@@ -31,31 +31,8 @@ namespace DAO
 			}
 		}
 
-		public async Task<List<ProductVM>> GetList(int? type)
-		{
-			var products = _context.Products.AsQueryable();
-			if (type.HasValue)
-			{
-				products = products.Where(p => p.TypeId == type.Value);
-			}
-			var result = await products.Select(p => new ProductVM
-			{
-				ProductId = p.ProductId,
-				ProductName = p.ProductName,
-				AliasName = p.AliasName,
-				Detail = p.Detail,
-				Price = p.Price,
-				Quantity = p.Quantity,
-				Picture = p.Picture,
-				ViewNumber = p.ViewNumber,
-			}).ToListAsync();
 
-			return result;
-		}
-
-		
-
-		public async Task<List<ProductVM>> GetProducts(int? type, string query)
+		public async Task<List<Product>> GetProducts(int? type, string query)
 		{
 			var products = _context.Products.AsQueryable();
 
@@ -68,23 +45,12 @@ namespace DAO
 			{
 				products = products.Where(p => p.TypeId == type.Value);
 			}
-
-
-			var result = await products.Select(p => new ProductVM
-			{
-				ProductId = p.ProductId,
-				ProductName = p.ProductName,
-				AliasName = p.AliasName,
-				Detail = p.Detail,
-				Price = p.Price,
-				Quantity = p.Quantity,
-				Picture = p.Picture,
-				ViewNumber = p.ViewNumber,
-			}).ToListAsync();
-
-			return result;
+			return await products.ToListAsync();
 		}
 
-
+		public async Task<Product> GetProductById(int id)
+		{
+			return await _context.Products.Include(x => x.Type).FirstOrDefaultAsync(p => p.ProductId == id);
+		}
 	}
 }

@@ -13,12 +13,27 @@ namespace Shoopi.Controllers
 		{
             _product = product;
 		}
-		public IList<ProductVM> Products { get; set; } = default!;
+		public IList<Product> Products { get; set; } = default!;
 		public async Task<IActionResult> Index(int? type, string query)
 		{
 			Products = await _product.GetProducts(type, query);
 			return View(Products);
 			
-		}       
+		}
+
+		public async Task<IActionResult> ProductDetail(int id)
+		{
+			if (id == null)
+			{
+				return Redirect("/404");
+			}
+			var products = await _product.GetProductById(id);
+			if (products == null)
+			{
+				return Redirect("/404");
+			}
+			return View(products);
+		}
+		
     }
 }
