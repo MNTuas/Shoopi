@@ -11,7 +11,8 @@ namespace Repository.IRepository
 {
 	public interface IProduct
 	{
-		Task<List<Product>> GetProducts(int? type, string query);
+		Task<ProductResponse> GetProducts(int? type, string query, int pageIndex, int pageSize);
+		//Task<List<Product>> GetProducts(int? type, string query);
 		Task<Product> GetProductById(int id);
 
 	}
