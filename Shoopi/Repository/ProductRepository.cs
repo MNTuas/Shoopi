@@ -18,9 +18,14 @@ namespace Repository
 			return ProductDAO.Instance.GetProductById(id);
 		}
 
-		public async Task<List<Product>> GetProducts(int? type, string query)
+		public async Task<ProductResponse> GetProducts(int? type, string query, int pageIndex, int pageSize)
 		{
-			return await ProductDAO.Instance.GetProducts(type, query);
+			return await ProductDAO.Instance.GetProducts(type, query, pageIndex, pageSize);
 		}
+
+		//public async Task<List<Product>> GetProducts(int? type, string query)
+		//{
+		//	return await ProductDAO.Instance.GetProducts(type, query);
+		//}
 	}
 }
