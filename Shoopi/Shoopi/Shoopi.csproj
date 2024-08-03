@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Controllers\CartController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\help-documentation\css\et-line-font\fonts\.DS_Store" />
   </ItemGroup>
 

@@ -1,23 +1,43 @@
 ﻿@model Shoopi.Data.Product
+
+<style>
+
+	button.cart-btn {
+		font-family: 'Poppins', sans-serif;
+		display: inline-block;
+		background-color: #F28123;
+		color: #fff;
+		padding: 10px 20px;
+		border-radius: 15px;
+		border:none
+	}
+
+		button.cart-btn i {
+			margin-right: 5px;
+		}
+
+</style>
 <!-- single product -->
-<div class="single-product mt-150 mb-150">
+
+<div class="single-product mt-150 mb-150" id="productlist" >
 	<div class="container">
-		<div class="row">
+		<div class="row" >
 			<div class="col-md-5">
-				<div class="single-product-img">
+				<div class="single-product-img" >
 					<img src="~/assets/img/products/product-img-5.jpg" alt="">
 				</div>
 			</div>
 			<div class="col-md-7">
-				<div class="single-product-content">
+				<div class="single-product-content" >
 					<h3>@Model.ProductName</h3>
 					<p class="single-product-pricing"><span>Per Kg</span> @Model.Price</p>
 					<p>@Model.Detail</p>
 					<div class="single-product-form">
-						<form action="index.html">
+						<form asp-action="AddToCart" asp-controller="Cart" asp-route-id="@Model.ProductId">
 							<input type="number" placeholder="0">
+						
+						<button class="cart-btn"  ><i class="fas fa-shopping-cart"></i> Add to Cart</button>
 						</form>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
 						<p><strong>Categories: </strong>@Model.Type.TypeName</p>
 					</div>
 					<h4>Share:</h4>
@@ -32,4 +52,21 @@
 		</div>
 	</div>
 </div>
+
 <!-- end single product -->
+
+<!--keo xuong giua-->
+<script>
+	window.onload = function () {
+		var element = document.getElementById("productlist");
+		if (element) {
+			var elementPosition = element.getBoundingClientRect().top;
+			var offsetPosition = elementPosition + window.pageYOffset - (window.innerHeight / 2) + (element.offsetHeight / 2);
+
+			window.scrollTo({
+				top: offsetPosition,
+				behavior: 'smooth'
+			});
+		}
+	};
+</script>

@@ -27,7 +27,7 @@
                         </div>
                         <h3>@item.ProductName</h3>
                         <p class="product-price"><span>Per Kg</span> @item.Price </p>
-                        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                        <a asp-action="AddToCart" asp-controller="Cart" asp-route-id="@item.ProductId" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
                     </div>
                 </div>
             }
