@@ -1,17 +1,75 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
+﻿using DAO.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Repository.IRepository;
+using Shoopi.Data;
+using Shoopi.Helper;
 namespace Shoopi.wwwroot
 {
     public class CartController : Controller
     {
-        public IActionResult Index()
+        private readonly IProduct _product;
+        private readonly ShoopiContext _context;
+        public CartController(IProduct product, ShoopiContext context)
         {
-            return View();
+			_context = context;
+            _product = product; 
         }
 
+		const string CART_KEY = "MYCART";
+        //session de luu gio hang 
+		public List<CartVM> Cart => HttpContext.Session.Get<List<CartVM>>(CART_KEY) ?? new List<CartVM>();
+        public IActionResult Index()
+        {
+            return View(Cart);
+        }
+       
         public IActionResult AddToCart(int id, int quantity = 1)
         {
-            return View();
+            var cartItem = Cart;
+            var item = cartItem.SingleOrDefault(p => p.ProductID == id);
+            if (item == null)
+            {
+                var product = _context.Products.SingleOrDefault(p => p.ProductId == id);
+                if (product == null)
+                {
+                    return Redirect("/404");
+                }
+                item = new CartVM
+                {
+                    ProductID = product.ProductId,
+                    Name = product.ProductName,
+                    Price = product.Price ?? 0,
+                    Picture = product.Picture ?? string.Empty,
+                    Quantity = quantity,
+                };
+                cartItem.Add(item);
+            }
+            else
+            {
+                item.Quantity += quantity;
+            }
+			HttpContext.Session.Set(CART_KEY, cartItem);
+
+			return RedirectToAction("Index");
+		}
+
+        public IActionResult RemoveCart(int id)
+        {
+            var cartData = HttpContext.Session.Get(CART_KEY);
+            if (cartData == null)
+            {
+                TempData["Message"] = "No product(s) in your cart"; 
+                return RedirectToAction("Index");
+            }
+            var cartItem = Cart;
+            var item = cartItem.SingleOrDefault( p => p.ProductID == id);
+            if (item != null) 
+            {
+                cartItem.Remove(item);
+                HttpContext.Session.Set(CART_KEY, cartItem);
+            }
+            return RedirectToAction("Index");
         }
-    }
+	
+	}
 }
