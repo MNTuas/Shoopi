@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DAO.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Shoopi.Data;
 using Shoopi.ViewModels;
@@ -31,22 +32,8 @@ namespace DAO
 			}
 		}
 
-		//public async Task<List<Product>> GetProducts(int? type, string query)
-		//{
-		//	var products = _context.Products.AsQueryable();
 
-		//	if (!string.IsNullOrEmpty(query))
-		//	{
-		//		products = products.Where(p => p.ProductName.Contains(query));
-		//	}
 
-		//	if (type.HasValue)
-		//	{
-		//		products = products.Where(p => p.TypeId == type.Value);
-		//	}
-		//	return await products.ToListAsync();
-			
-		//}
 
 		public async Task<ProductResponse> GetProducts(int? type, string query, int pageIndex, int pageSize)
 		{
@@ -84,5 +71,7 @@ namespace DAO
 		{
 			return await _context.Products.Include(x => x.Type).FirstOrDefaultAsync(p => p.ProductId == id);
 		}
+
+		
 	}
 }

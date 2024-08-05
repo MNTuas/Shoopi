@@ -34,7 +34,7 @@
 					<p>@Model.Detail</p>
 					<div class="single-product-form">
 						<form asp-action="AddToCart" asp-controller="Cart" asp-route-id="@Model.ProductId">
-							<input type="number" placeholder="0">
+							<input type="number" placeholder="0" name="quantity">
 						
 						<button class="cart-btn"  ><i class="fas fa-shopping-cart"></i> Add to Cart</button>
 						</form>

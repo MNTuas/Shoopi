@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Repository.Helper
+namespace Shoopi.Helper
 {
     public static class SessionExtensions
     {
