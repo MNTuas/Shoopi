@@ -122,7 +122,7 @@
 									<div class="header-icons">
 										<a class="shopping-cart" asp-action="Index" asp-controller="Cart">
 											<i class="fas fa-shopping-cart"></i>
-											<span class="cart-count">152</span>
+											<span class="cart-count">@TempData["CartCount"]</span>
 										</a>
 										<a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
 									</div>
@@ -291,6 +291,25 @@
 	<script src="~/assets/js/sticker.js"></script>
 	<!-- main js -->
 	<script src="~/assets/js/main.js"></script>
-
+	
+	<script>
+		function addToCart(productId, quantity) {
+        $.ajax({
+            url: '@Url.Action("AddToCart", "Cart")',
+            type: 'POST',
+            data: { id: productId, quantity: quantity },
+            success: function (response) {
+                if (response.success) {
+                    $('.cart-count').text(response.totalQuantity);
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function () {
+                alert('An error occurred while adding the item to the cart.');
+            }
+        });
+    }
+	</script>
 </body>
 </html>

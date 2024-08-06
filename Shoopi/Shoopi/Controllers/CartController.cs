@@ -22,7 +22,7 @@ namespace Shoopi.wwwroot
         {
             return View(Cart);
         }
-       
+
         public IActionResult AddToCart(int id, int quantity = 1)
         {
             var cartItem = Cart;
@@ -32,7 +32,7 @@ namespace Shoopi.wwwroot
                 var product = _context.Products.SingleOrDefault(p => p.ProductId == id);
                 if (product == null)
                 {
-                    return Redirect("/404");
+                    return Json(new { success = false, message = "Product not found" });
                 }
                 item = new CartVM
                 {
@@ -48,10 +48,16 @@ namespace Shoopi.wwwroot
             {
                 item.Quantity += quantity;
             }
-			HttpContext.Session.Set(CART_KEY, cartItem);
+            HttpContext.Session.Set(CART_KEY, cartItem);
 
-			return RedirectToAction("Index");
+            //lay du lieu session de load tempdata
+			var currentCount = HttpContext.Session.GetInt32("CartCount") ?? 0;
+			HttpContext.Session.SetInt32("CartCount", currentCount + quantity);
+			TempData["CartCount"] = currentCount + quantity;
+
+			return Json(new { success = true, totalQuantity = currentCount + quantity });
 		}
+
 
         public IActionResult RemoveCart(int id)
         {

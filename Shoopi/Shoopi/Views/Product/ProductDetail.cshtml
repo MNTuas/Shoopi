@@ -33,11 +33,12 @@
 					<p class="single-product-pricing"><span>Per Kg</span> @Model.Price</p>
 					<p>@Model.Detail</p>
 					<div class="single-product-form">
-						<form asp-action="AddToCart" asp-controller="Cart" asp-route-id="@Model.ProductId">
-							<input type="number" placeholder="0" name="quantity">
+
+						<input id="quantity" type="number" placeholder="0" name="quantity">
+
+						<a class="cart-btn" href="#" onclick="addToCart(@Model.ProductId); return false;">Add to Cart</a>
+
 						
-						<button class="cart-btn"  ><i class="fas fa-shopping-cart"></i> Add to Cart</button>
-						</form>
 						<p><strong>Categories: </strong>@Model.Type.TypeName</p>
 					</div>
 					<h4>Share:</h4>
@@ -69,4 +70,26 @@
 			});
 		}
 	};
+		function addToCart(productId) {
+			// Get the quantity from the input field
+			var quantity = document.getElementById('quantity').value;
+
+			// Perform AJAX request
+			$.ajax({
+				url: '@Url.Action("AddToCart", "Cart")',
+				type: 'POST',
+				data: { id: productId, quantity: quantity },
+				success: function (response) {
+					if (response.success) {
+						$('.cart-count').text(response.totalQuantity);
+					} else {
+						alert(response.message);
+					}
+				},
+				error: function () {
+					alert('An error occurred while adding the item to the cart.');
+				}
+			});
+		}
 </script>
+
