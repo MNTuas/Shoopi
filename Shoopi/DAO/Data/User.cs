@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Shoopi.Data;
+namespace DAO.Data;
 
 public partial class User
 {
@@ -23,9 +23,11 @@ public partial class User
 
     public string? Picture { get; set; }
 
-    public string? Status { get; set; }
+    public bool Status { get; set; }
 
     public int? RoleId { get; set; }
+
+    public string? RandomKey { get; set; }
 
     public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
 

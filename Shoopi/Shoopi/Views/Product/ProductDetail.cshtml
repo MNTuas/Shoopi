@@ -1,4 +1,4 @@
-﻿@model Shoopi.Data.Product
+﻿@model DAO.Data.Product
 
 <style>
 
@@ -9,7 +9,7 @@
 		color: #fff;
 		padding: 10px 20px;
 		border-radius: 15px;
-		border:none
+		border: none
 	}
 
 		button.cart-btn i {
@@ -19,16 +19,16 @@
 </style>
 <!-- single product -->
 
-<div class="single-product mt-150 mb-150" id="productlist" >
+<div class="single-product mt-150 mb-150" id="productlist">
 	<div class="container">
-		<div class="row" >
+		<div class="row">
 			<div class="col-md-5">
-				<div class="single-product-img" >
+				<div class="single-product-img">
 					<img src="~/assets/img/products/product-img-5.jpg" alt="">
 				</div>
 			</div>
 			<div class="col-md-7">
-				<div class="single-product-content" >
+				<div class="single-product-content">
 					<h3>@Model.ProductName</h3>
 					<p class="single-product-pricing"><span>Per Kg</span> @Model.Price</p>
 					<p>@Model.Detail</p>
@@ -38,7 +38,7 @@
 
 						<a class="cart-btn" href="#" onclick="addToCart(@Model.ProductId); return false;">Add to Cart</a>
 
-						
+
 						<p><strong>Categories: </strong>@Model.Type.TypeName</p>
 					</div>
 					<h4>Share:</h4>
@@ -55,7 +55,6 @@
 </div>
 
 <!-- end single product -->
-
 <!--keo xuong giua-->
 <script>
 	window.onload = function () {
@@ -70,26 +69,26 @@
 			});
 		}
 	};
-		function addToCart(productId) {
-			// Get the quantity from the input field
-			var quantity = document.getElementById('quantity').value;
+	function addToCart(productId) {
+		// Get the quantity from the input field
+		var quantity = document.getElementById('quantity').value;
 
-			// Perform AJAX request
-			$.ajax({
-				url: '@Url.Action("AddToCart", "Cart")',
-				type: 'POST',
-				data: { id: productId, quantity: quantity },
-				success: function (response) {
-					if (response.success) {
-						$('.cart-count').text(response.totalQuantity);
-					} else {
-						alert(response.message);
-					}
-				},
-				error: function () {
-					alert('An error occurred while adding the item to the cart.');
+		// Perform AJAX request
+		$.ajax({
+			url: '@Url.Action("AddToCart", "Cart")',
+			type: 'POST',
+			data: { id: productId, quantity: quantity },
+			success: function (response) {
+				if (response.success) {
+					$('.cart-count').text(response.totalQuantity);
+				} else {
+					alert(response.message);
 				}
-			});
-		}
+			},
+			error: function () {
+				alert('An error occurred while adding the item to the cart.');
+			}
+		});
+	}
 </script>
 

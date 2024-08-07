@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Shoopi.Data;
+namespace DAO.Data;
 
 public partial class Favorite
 {

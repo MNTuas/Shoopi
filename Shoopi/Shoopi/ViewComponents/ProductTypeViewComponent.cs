@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Shoopi.Data;
+using DAO.Data;
 using Shoopi.ViewModels;
 
 namespace Shoopi.ViewComponents
