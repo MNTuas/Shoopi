@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Repository.IRepository;
-using Shoopi.Data;
+using DAO.Data;
 using Shoopi.ViewModels;
 
 namespace Shoopi.Controllers

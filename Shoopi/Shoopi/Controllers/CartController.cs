@@ -1,7 +1,7 @@
 ﻿using DAO.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Repository.IRepository;
-using Shoopi.Data;
+using DAO.Data;
 using Shoopi.Helper;
 namespace Shoopi.wwwroot
 {

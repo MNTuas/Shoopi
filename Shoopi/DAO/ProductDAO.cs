@@ -1,7 +1,7 @@
-﻿using DAO.ViewModels;
+﻿using DAO.Data;
+using DAO.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Shoopi.Data;
 using Shoopi.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -72,6 +72,6 @@ namespace DAO
 			return await _context.Products.Include(x => x.Type).FirstOrDefaultAsync(p => p.ProductId == id);
 		}
 
-		
+
 	}
 }

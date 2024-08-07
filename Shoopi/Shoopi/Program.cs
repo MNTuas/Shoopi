@@ -1,6 +1,6 @@
 using Repository;
 using Repository.IRepository;
-using Shoopi.Data;
+using DAO.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
