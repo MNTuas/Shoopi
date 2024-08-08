@@ -54,6 +54,7 @@ public partial class ShoopiContext : DbContext
             entity.ToTable("Favorite");
 
             entity.Property(e => e.FavoriteId)
+            
                 .ValueGeneratedNever()
                 .HasColumnName("Favorite_ID");
             entity.Property(e => e.Detail).HasMaxLength(255);
@@ -184,33 +185,35 @@ public partial class ShoopiContext : DbContext
             entity.Property(e => e.TypeName).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<User>(entity =>
-        {
-            entity.HasKey(e => e.UserId).HasName("PK__User__206D91903D8DDF05");
+		modelBuilder.Entity<User>(entity =>
+		{
+			entity.HasKey(e => e.UserId).HasName("PK__User__206D91903D8DDF05");
 
-            entity.ToTable("User");
+			entity.ToTable("User");
 
-            entity.Property(e => e.UserId)
-                .ValueGeneratedNever()
-                .HasColumnName("User_ID");
-            entity.Property(e => e.Address).HasMaxLength(255);
-            entity.Property(e => e.Email).HasMaxLength(255);
-            entity.Property(e => e.FullName).HasMaxLength(50);
-            entity.Property(e => e.Gender).HasMaxLength(50);
-            entity.Property(e => e.Password).HasMaxLength(50);
-            entity.Property(e => e.PhoneNumber).HasMaxLength(50);
-            entity.Property(e => e.Picture).HasMaxLength(255);
-            entity.Property(e => e.RandomKey)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.RoleId).HasColumnName("Role_ID");
+			entity.Property(e => e.UserId)
+            //dung identity tu tang thi dung cai nay
+				.ValueGeneratedOnAdd() // Change from ValueGeneratedNever to ValueGeneratedOnAdd
+				.HasColumnName("User_ID");
+			entity.Property(e => e.Address).HasMaxLength(255);
+			entity.Property(e => e.Email).HasMaxLength(255);
+			entity.Property(e => e.FullName).HasMaxLength(50);
+			entity.Property(e => e.Gender).HasMaxLength(50);
+			entity.Property(e => e.Password).HasMaxLength(50);
+			entity.Property(e => e.PhoneNumber).HasMaxLength(50);
+			entity.Property(e => e.Picture).HasMaxLength(255);
+			entity.Property(e => e.RandomKey)
+				.HasMaxLength(50)
+				.IsUnicode(false);
+			entity.Property(e => e.RoleId).HasColumnName("Role_ID");
 
-            entity.HasOne(d => d.Role).WithMany(p => p.Users)
-                .HasForeignKey(d => d.RoleId)
-                .HasConstraintName("FK__User__Role_ID__5DCAEF64");
-        });
+			entity.HasOne(d => d.Role).WithMany(p => p.Users)
+				.HasForeignKey(d => d.RoleId)
+				.HasConstraintName("FK__User__Role_ID__5DCAEF64");
+		});
 
-        OnModelCreatingPartial(modelBuilder);
+
+		OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

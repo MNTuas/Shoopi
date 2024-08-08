@@ -1,6 +1,8 @@
 using Repository;
 using Repository.IRepository;
 using DAO.Data;
+using Shoopi.Helper;
+using DAO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ShoopiContext>();
 builder.Services.AddScoped<IProduct,ProductRepository>();
+builder.Services.AddScoped<IUser,UserRepository>();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+builder.Services.AddScoped<UserDAO>();
 
 builder.Services.AddDistributedMemoryCache();
 
