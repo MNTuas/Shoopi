@@ -1,0 +1,28 @@
+﻿using AutoMapper;
+using DAO;
+using DAO.ViewModels;
+using Repository.IRepository;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Repository
+{
+	public class UserRepository : IUser
+	{
+		private readonly UserDAO _userDAO;
+
+		public UserRepository(UserDAO userDAO)
+		{
+			_userDAO = userDAO;
+		}
+
+		public async Task SignUp(RegisterVM model)
+		{
+			await _userDAO.SignUp(model); // Await the async call
+		}
+	}
+
+}
