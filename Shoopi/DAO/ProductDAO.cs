@@ -32,9 +32,6 @@ namespace DAO
 			}
 		}
 
-
-
-
 		public async Task<ProductResponse> GetProducts(int? type, string query, int pageIndex, int pageSize)
 		{
 			var products = _context.Products.AsQueryable();

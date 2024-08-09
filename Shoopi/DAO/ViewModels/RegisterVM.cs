@@ -19,12 +19,13 @@ namespace DAO.ViewModels
 		public string? Password { get; set; }
         [Required]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string RepeatPassword { get; set; }
+        public string ConfirmPassword { get; set; }
         [Required]
 		public string? Gender { get; set; }
 		[Required]
 		public DateOnly? Birthday { get; set; }
 		[EmailAddress]
+		[Required]
 		public string? Email { get; set; }
 
 		public bool Status { get; set; }

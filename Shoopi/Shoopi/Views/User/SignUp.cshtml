@@ -22,7 +22,7 @@
             <div class="col-12 col-lg-10 col-xl-8">
                 <div class="row gy-5 justify-content-center">
                     <div class="col-12 col-lg-5">
-                        <form asp-action="SignUp" method="post" onsubmit="return validatePassword()">
+                        <form asp-action="SignUp" method="post" >
                             <div class="row gy-3 overflow-hidden">
 
                                 <div class="col-12">
@@ -51,13 +51,14 @@
                                 <div class="col-12">
                                     <div class="form-floating mb-3">
                                         
-                                        <input class="form-control border-0 border-bottom rounded-0" asp-for="@Model.RepeatPassword" id="repeat-password" type="password" class="input" data-type="password" />
-                                        <span asp-validation-for="@Model.RepeatPassword" class="text-danger"></span>
+                                        <input class="form-control border-0 border-bottom rounded-0" asp-for="@Model.ConfirmPassword" id="repeat-password" type="password" class="input" data-type="password" />
+                                        <span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
                                         <label for="repeat-password" class="label">Confirm Password</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating mb-3">
+                                        <span asp-validation-for="@Model.Birthday" class="text-danger"></span>
                                         <input class="form-control border-0 border-bottom rounded-0" asp-for="@Model.Birthday" id="birthday" type="date" class="input">
                                     </div>
                                 </div>

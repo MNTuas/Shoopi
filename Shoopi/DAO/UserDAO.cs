@@ -15,12 +15,14 @@ namespace DAO
 	{
 		private readonly ShoopiContext _context;
 		private readonly IMapper _mapper;
-
+		private static UserDAO instance = null;
 		public UserDAO(IMapper mapper)
 		{
 			_context = new ShoopiContext();
 			_mapper = mapper;
 		}
+
+		
 
 		public async Task SignUp(RegisterVM model)
 		{
