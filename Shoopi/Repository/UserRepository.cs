@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DAO;
+using DAO.Data;
 using DAO.ViewModels;
 using Repository.IRepository;
 using System;
@@ -19,7 +20,12 @@ namespace Repository
 			_userDAO = userDAO;
 		}
 
-		public async Task SignUp(RegisterVM model)
+        public async Task<Users> Login(LoginVM model)
+        {
+            return await _userDAO.Login(model);
+        }
+
+        public async Task SignUp(RegisterVM model)
 		{
 			await _userDAO.SignUp(model); // Await the async call
 		}

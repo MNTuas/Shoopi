@@ -30,7 +30,7 @@ public partial class ShoopiContext : DbContext
 
     public virtual DbSet<Type> Types { get; set; }
 
-    public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<Users> Users { get; set; }
 
 	public static string GetConnectionString(string connectionStringName)
 	{
@@ -185,7 +185,7 @@ public partial class ShoopiContext : DbContext
             entity.Property(e => e.TypeName).HasMaxLength(50);
         });
 
-		modelBuilder.Entity<User>(entity =>
+		modelBuilder.Entity<Users>(entity =>
 		{
 			entity.HasKey(e => e.UserId).HasName("PK__User__206D91903D8DDF05");
 

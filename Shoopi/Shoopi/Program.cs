@@ -3,6 +3,7 @@ using Repository.IRepository;
 using DAO.Data;
 using Shoopi.Helper;
 using DAO;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,14 @@ builder.Services.AddScoped<IProduct,ProductRepository>();
 builder.Services.AddScoped<IUser,UserRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddScoped<UserDAO>();
+
+//authentication dung cookie
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
+    options =>
+    {
+        options.LoginPath = "/User/Login";
+        options.AccessDeniedPath = "/User/AccessDenied";
+    });
 
 builder.Services.AddDistributedMemoryCache();
 
@@ -36,8 +45,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
 app.UseSession();
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",

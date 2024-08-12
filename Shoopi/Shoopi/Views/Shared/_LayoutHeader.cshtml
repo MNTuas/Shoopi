@@ -102,13 +102,14 @@
 									</ul>
 								</li>
 								<li>
-									<a href="news.html">News</a>
+									<a asp-action="Login" asp-controller="User">News</a>
 									<ul class="sub-menu">
 										<li><a href="news.html">News</a></li>
 										<li><a href="single-news.html">Single News</a></li>
 									</ul>
 								</li>
 								<li><a href="contact.html">Contact</a></li>
+								
 								<li>
 									<a asp-action="Index"  asp-controller="Product">Shop</a>
 									<ul class="sub-menu">
@@ -132,6 +133,7 @@
 											<span class="cart-count">@TempData["CartCount"]</span>
 										</a>
 										<a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+										<a>Welcome @Context.User.Identity.Name</a>
 									</div>
 
 
@@ -139,6 +141,7 @@
 							</ul>
 						</nav>
 						<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+						
 						<div class="mobile-menu"></div>
 						<!-- menu end -->
 					</div>
