@@ -1,4 +1,5 @@
-﻿using DAO.ViewModels;
+﻿using DAO.Data;
+using DAO.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,7 @@ namespace Repository.IRepository
 	public interface IUser
 	{
 		Task SignUp(RegisterVM model);
-	}
+		Task<Users> Login(LoginVM model);
+
+    }
 }

@@ -31,5 +31,5 @@ public partial class Order
 
     public virtual OrderStatus? OrderStatus { get; set; }
 
-    public virtual User? User { get; set; }
+    public virtual Users? User { get; set; }
 }

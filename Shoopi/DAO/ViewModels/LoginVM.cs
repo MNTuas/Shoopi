@@ -16,5 +16,8 @@ namespace DAO.ViewModels
         [Required]
         [MaxLength(20, ErrorMessage = "Password must be < 20 keys")]
         public string? Password { get; set; }
+
+        public string FullName { get; set; } = string.Empty;
+        public int UserId { get; set; }
     }
 }
