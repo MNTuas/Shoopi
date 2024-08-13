@@ -7,10 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Shared\_LayoutLoggedOut.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Controllers\CartController.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Shared\_LayoutLoggedOut.cshtml" />
     <None Include="wwwroot\help-documentation\css\et-line-font\fonts\.DS_Store" />
   </ItemGroup>
 
@@ -33,6 +38,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Repository\Repository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Shared\_LayoutLoggedOut.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Shared\_LayoutLoggedOut.cshtml" />
   </ItemGroup>
 
 </Project>

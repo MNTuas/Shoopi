@@ -120,7 +120,7 @@
 								<li>
 									<a asp-action="LogIn" asp-controller="User">LogIn</a>
 									<ul class="sub-menu">
-										<li><a asp-action="SignUp" asp-controller="User">SignUp</a></li>
+										<li><a asp-action="SignIn" asp-controller="User">SignIn</a></li>
 										<li><a href="single-news.html">Single News</a></li>
 									</ul>
 								</li>
@@ -131,7 +131,7 @@
 											<span class="cart-count">@TempData["CartCount"]</span>
 										</a>
 										<a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
-
+										
 									</div>
 
 
@@ -314,7 +314,7 @@
 					}
 				},
 				error: function () {
-					window.location.href = ("User/Login"); 
+					alert('An error occurred while adding the item to the cart.');
 				}
 			});
 		}
