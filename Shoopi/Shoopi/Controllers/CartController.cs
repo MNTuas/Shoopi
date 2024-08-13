@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Repository.IRepository;
 using DAO.Data;
 using Shoopi.Helper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
 namespace Shoopi.wwwroot
 {
     public class CartController : Controller
@@ -23,6 +25,7 @@ namespace Shoopi.wwwroot
             return View(Cart);
         }
 
+        [Authorize]
         public IActionResult AddToCart(int id, int quantity = 1)
         {
             var cartItem = Cart;
@@ -64,9 +67,9 @@ namespace Shoopi.wwwroot
             var cartData = HttpContext.Session.Get(CART_KEY);
             if (cartData == null)
             {
-                TempData["Message"] = "No product(s) in your cart"; 
-                return RedirectToAction("Index");
-            }
+                TempData["Message"] = "No product(s) in your cart";
+				return Content(Url.Action("Index", "Product"));
+			}
             var cartItem = Cart;
             var item = cartItem.SingleOrDefault( p => p.ProductID == id);
             if (item != null) 
@@ -74,7 +77,12 @@ namespace Shoopi.wwwroot
                 cartItem.Remove(item);
                 HttpContext.Session.Set(CART_KEY, cartItem);
             }
-            return RedirectToAction("Index");
+			if (cartItem.Count == 0)
+			{
+				TempData["Message"] = "No product(s) in your cart";
+				return RedirectToAction("Index", "Product");
+			}
+			return RedirectToAction("Index");
         }
 	
 	}

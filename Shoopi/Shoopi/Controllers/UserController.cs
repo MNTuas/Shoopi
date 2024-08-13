@@ -76,18 +76,13 @@ namespace Shoopi.Controllers
             }
             return View();
         }
-
-        [Authorize]
-        public IActionResult Profile()
-        {
-            return View();
-        }
-        
+      
         [Authorize]
         public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync();
-            return Redirect("/");
+            return RedirectToAction("Index", "Home");
+
         }
     }
 }
