@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DAO.Data;
 
-public partial class Users
+public partial class User
 {
     public int UserId { get; set; }
 

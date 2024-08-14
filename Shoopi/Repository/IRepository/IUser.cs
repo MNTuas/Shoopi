@@ -11,7 +11,7 @@ namespace Repository.IRepository
 	public interface IUser
 	{
 		Task SignUp(RegisterVM model);
-		Task<Users> Login(LoginVM model);
+		Task<User> Login(LoginVM model);
 
     }
 }

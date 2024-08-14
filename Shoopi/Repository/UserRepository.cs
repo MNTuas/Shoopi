@@ -20,7 +20,7 @@ namespace Repository
 			_userDAO = userDAO;
 		}
 
-        public async Task<Users> Login(LoginVM model)
+        public async Task<User> Login(LoginVM model)
         {
             return await _userDAO.Login(model);
         }
