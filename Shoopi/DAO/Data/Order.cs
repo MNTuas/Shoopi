@@ -15,6 +15,8 @@ public partial class Order
 
     public DateOnly? CreateDate { get; set; }
 
+    public string? PhoneNumber { get; set; }
+
     public DateOnly? DeliveryDate { get; set; }
 
     public string? MethodPayment { get; set; }
@@ -31,5 +33,5 @@ public partial class Order
 
     public virtual OrderStatus? OrderStatus { get; set; }
 
-    public virtual Users? User { get; set; }
+    public virtual User? User { get; set; }
 }

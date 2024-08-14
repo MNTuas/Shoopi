@@ -55,7 +55,7 @@ namespace Shoopi.Controllers
                 var claims = new List<Claim> {
                                 new Claim(ClaimTypes.Email, model.Email),
                                 new Claim(ClaimTypes.Name, model.FullName),
-                                new Claim("CustomerID", model.UserId.ToString()),
+                                new Claim(MySetting.CLAIM_CUSTOMERID, model.UserId.ToString()),
 
 								//claim - role động
 								new Claim(ClaimTypes.Role, "User")

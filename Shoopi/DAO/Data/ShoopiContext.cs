@@ -30,7 +30,7 @@ public partial class ShoopiContext : DbContext
 
     public virtual DbSet<Type> Types { get; set; }
 
-    public virtual DbSet<Users> Users { get; set; }
+    public virtual DbSet<User> Users { get; set; }
 
 	public static string GetConnectionString(string connectionStringName)
 	{
@@ -49,14 +49,11 @@ public partial class ShoopiContext : DbContext
     {
         modelBuilder.Entity<Favorite>(entity =>
         {
-            entity.HasKey(e => e.FavoriteId).HasName("PK__Favorite__749FA5A748B9A295");
+            entity.HasKey(e => e.FavoriteId).HasName("PK__Favorite__749FA5A78E7BC294");
 
             entity.ToTable("Favorite");
 
-            entity.Property(e => e.FavoriteId)
-            
-                .ValueGeneratedNever()
-                .HasColumnName("Favorite_ID");
+            entity.Property(e => e.FavoriteId).HasColumnName("Favorite_ID");
             entity.Property(e => e.Detail).HasMaxLength(255);
             entity.Property(e => e.ProductId).HasColumnName("Product_ID");
             entity.Property(e => e.UserId).HasColumnName("User_ID");
@@ -72,13 +69,11 @@ public partial class ShoopiContext : DbContext
 
         modelBuilder.Entity<Order>(entity =>
         {
-            entity.HasKey(e => e.OrderId).HasName("PK__Order__F1E4639BE43E0930");
+            entity.HasKey(e => e.OrderId).HasName("PK__Order__F1E4639BE27300A0");
 
             entity.ToTable("Order");
 
-            entity.Property(e => e.OrderId)
-                .ValueGeneratedNever()
-                .HasColumnName("Order_ID");
+            entity.Property(e => e.OrderId).HasColumnName("Order_ID");
             entity.Property(e => e.Address).HasMaxLength(100);
             entity.Property(e => e.Delivery).HasMaxLength(50);
             entity.Property(e => e.FeeDelivery).HasColumnType("decimal(18, 2)");
@@ -86,6 +81,7 @@ public partial class ShoopiContext : DbContext
             entity.Property(e => e.MethodPayment).HasMaxLength(50);
             entity.Property(e => e.Note).HasMaxLength(255);
             entity.Property(e => e.OrderStatusId).HasColumnName("OrderStatus_ID");
+            entity.Property(e => e.PhoneNumber).HasMaxLength(20);
             entity.Property(e => e.UserId).HasColumnName("User_ID");
 
             entity.HasOne(d => d.OrderStatus).WithMany(p => p.Orders)
@@ -99,13 +95,11 @@ public partial class ShoopiContext : DbContext
 
         modelBuilder.Entity<OrderDetail>(entity =>
         {
-            entity.HasKey(e => e.OrderDetailId).HasName("PK__OrderDet__53D880E06D1692B4");
+            entity.HasKey(e => e.OrderDetailId).HasName("PK__OrderDet__53D880E018DFB334");
 
             entity.ToTable("OrderDetail");
 
-            entity.Property(e => e.OrderDetailId)
-                .ValueGeneratedNever()
-                .HasColumnName("OrderDetail_ID");
+            entity.Property(e => e.OrderDetailId).HasColumnName("OrderDetail_ID");
             entity.Property(e => e.Discount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.OrderId).HasColumnName("Order_ID");
             entity.Property(e => e.ProductId).HasColumnName("Product_ID");
@@ -122,26 +116,22 @@ public partial class ShoopiContext : DbContext
 
         modelBuilder.Entity<OrderStatus>(entity =>
         {
-            entity.HasKey(e => e.OrderStatusId).HasName("PK__OrderSta__489D9CD266C381C6");
+            entity.HasKey(e => e.OrderStatusId).HasName("PK__OrderSta__489D9CD23D6DE618");
 
             entity.ToTable("OrderStatus");
 
-            entity.Property(e => e.OrderStatusId)
-                .ValueGeneratedNever()
-                .HasColumnName("OrderStatus_ID");
+            entity.Property(e => e.OrderStatusId).HasColumnName("OrderStatus_ID");
             entity.Property(e => e.Description).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(255);
         });
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.ProductId).HasName("PK__Product__9834FB9A9DFDBB0A");
+            entity.HasKey(e => e.ProductId).HasName("PK__Product__9834FB9A4F371679");
 
             entity.ToTable("Product");
 
-            entity.Property(e => e.ProductId)
-                .ValueGeneratedNever()
-                .HasColumnName("Product_ID");
+            entity.Property(e => e.ProductId).HasColumnName("Product_ID");
             entity.Property(e => e.AliasName).HasMaxLength(50);
             entity.Property(e => e.Detail).HasMaxLength(255);
             entity.Property(e => e.Discount).HasColumnType("decimal(18, 2)");
@@ -160,60 +150,52 @@ public partial class ShoopiContext : DbContext
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.RoleId).HasName("PK__Role__D80AB49B4BE5D412");
+            entity.HasKey(e => e.RoleId).HasName("PK__Role__D80AB49B06273956");
 
             entity.ToTable("Role");
 
-            entity.Property(e => e.RoleId)
-                .ValueGeneratedNever()
-                .HasColumnName("Role_ID");
+            entity.Property(e => e.RoleId).HasColumnName("Role_ID");
             entity.Property(e => e.Description).HasMaxLength(50);
             entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Type>(entity =>
         {
-            entity.HasKey(e => e.TypeId).HasName("PK__Type__FE90DDFE7421FE31");
+            entity.HasKey(e => e.TypeId).HasName("PK__Type__FE90DDFE241C61E7");
 
             entity.ToTable("Type");
 
-            entity.Property(e => e.TypeId)
-                .ValueGeneratedNever()
-                .HasColumnName("Type_ID");
+            entity.Property(e => e.TypeId).HasColumnName("Type_ID");
             entity.Property(e => e.Detail).HasMaxLength(255);
             entity.Property(e => e.Note).HasMaxLength(255);
             entity.Property(e => e.TypeName).HasMaxLength(50);
         });
 
-		modelBuilder.Entity<Users>(entity =>
-		{
-			entity.HasKey(e => e.UserId).HasName("PK__User__206D91903D8DDF05");
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.UserId).HasName("PK__User__206D9190A839353B");
 
-			entity.ToTable("User");
+            entity.ToTable("User");
 
-			entity.Property(e => e.UserId)
-            //dung identity tu tang thi dung cai nay
-				.ValueGeneratedOnAdd() // Change from ValueGeneratedNever to ValueGeneratedOnAdd
-				.HasColumnName("User_ID");
-			entity.Property(e => e.Address).HasMaxLength(255);
-			entity.Property(e => e.Email).HasMaxLength(255);
-			entity.Property(e => e.FullName).HasMaxLength(50);
-			entity.Property(e => e.Gender).HasMaxLength(50);
-			entity.Property(e => e.Password).HasMaxLength(50);
-			entity.Property(e => e.PhoneNumber).HasMaxLength(50);
-			entity.Property(e => e.Picture).HasMaxLength(255);
-			entity.Property(e => e.RandomKey)
-				.HasMaxLength(50)
-				.IsUnicode(false);
-			entity.Property(e => e.RoleId).HasColumnName("Role_ID");
+            entity.Property(e => e.UserId).HasColumnName("User_ID");
+            entity.Property(e => e.Address).HasMaxLength(255);
+            entity.Property(e => e.Email).HasMaxLength(255);
+            entity.Property(e => e.FullName).HasMaxLength(50);
+            entity.Property(e => e.Gender).HasMaxLength(50);
+            entity.Property(e => e.Password).HasMaxLength(50);
+            entity.Property(e => e.PhoneNumber).HasMaxLength(20);
+            entity.Property(e => e.Picture).HasMaxLength(255);
+            entity.Property(e => e.RandomKey)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.RoleId).HasColumnName("Role_ID");
 
-			entity.HasOne(d => d.Role).WithMany(p => p.Users)
-				.HasForeignKey(d => d.RoleId)
-				.HasConstraintName("FK__User__Role_ID__5DCAEF64");
-		});
+            entity.HasOne(d => d.Role).WithMany(p => p.Users)
+                .HasForeignKey(d => d.RoleId)
+                .HasConstraintName("FK__User__Role_ID__5DCAEF64");
+        });
 
-
-		OnModelCreatingPartial(modelBuilder);
+        OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

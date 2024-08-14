@@ -8,7 +8,7 @@ namespace Shoopi.Helper
 	{
 		public AutoMapperProfile() 
 		{
-			CreateMap<RegisterVM, Users>();
+			CreateMap<RegisterVM, User>();
 		}
 	}
 }

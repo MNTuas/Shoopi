@@ -31,7 +31,7 @@ namespace DAO
         {
             try
             {
-                var user = _mapper.Map<Users>(model);
+                var user = _mapper.Map<User>(model);
                 user.RandomKey = MyUtil.GenerateRamdomKey();
                 user.Password = model.Password.ToMd5Hash(user.RandomKey);
                 user.RoleId = 1;
@@ -64,7 +64,7 @@ namespace DAO
         //    return user;
         //}
 
-        public async Task<Users> Login(LoginVM model)
+        public async Task<User> Login(LoginVM model)
         {
             var user = await _context.Users.FirstOrDefaultAsync(p => p.Email == model.Email);
             if (user == null)
