@@ -9,9 +9,9 @@ namespace Shoopi.wwwroot
 {
     public class CartController : Controller
     {
-        private readonly IProduct _product;
+        private readonly IProductRepository _product;
         private readonly ShoopiContext _context;
-        public CartController(IProduct product, ShoopiContext context)
+        public CartController(IProductRepository product, ShoopiContext context)
         {
             _context = context;
             _product = product;
@@ -21,6 +21,7 @@ namespace Shoopi.wwwroot
         //session de luu gio hang 
         public List<CartVM> Cart => HttpContext.Session.Get<List<CartVM>>(MySetting.CART_KEY) ?? new List<CartVM>();
         public List<Product> Product;
+
         #region CART
         [Authorize]
         public IActionResult Index()

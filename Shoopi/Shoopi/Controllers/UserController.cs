@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Repository.Helpers.Response;
 using Repository.IRepository;
 using Shoopi.Helper;
 using System.Security.Claims;
@@ -13,11 +14,11 @@ namespace Shoopi.Controllers
 {
     public class UserController : Controller
     {
-        private readonly IUser _user;
+        private readonly IUserRepository _userRepository;
 
-        public UserController(IUser user)
+        public UserController(IUserRepository user)
         {
-            _user = user;
+			_userRepository = user;
         }
 
 
@@ -31,9 +32,16 @@ namespace Shoopi.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _user.SignUp(model);
-                var url = Url.Action("Index", "Home");
-                return Redirect(url);
+                var result = await _userRepository.SignUp(model);
+                if (result.Success)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = result.ErrorMessage;
+                    return View(model);
+                }              
             }
             return View(model);
         }
@@ -51,8 +59,10 @@ namespace Shoopi.Controllers
             ViewBag.ReturnUrl = ReturnUrl;
             if (ModelState.IsValid)
             {
-                var user = await _user.Login(model);
-                var claims = new List<Claim> {
+                var user = await _userRepository.Login(model);
+                if (user.Success)
+                {
+                    var claims = new List<Claim> {
                                 new Claim(ClaimTypes.Email, model.Email),
                                 new Claim(ClaimTypes.Name, model.FullName),
                                 new Claim(MySetting.CLAIM_CUSTOMERID, model.UserId.ToString()),
@@ -60,19 +70,26 @@ namespace Shoopi.Controllers
 								//claim - role động
 								new Claim(ClaimTypes.Role, "User")
                 };
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
-                await HttpContext.SignInAsync(claimsPrincipal);
+                    await HttpContext.SignInAsync(claimsPrincipal);
 
-                if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
-                {
-                    return Redirect(ReturnUrl);
+                    if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
+                    {
+                        return Redirect(ReturnUrl);
+                    }
+                    else
+                    {
+                        return Redirect("/");
+                    }
                 }
                 else
                 {
-                    return Redirect("/");
+                    ViewBag.ErrorMessage = user.ErrorMessage;
+                    return View(model);  
                 }
+               
             }
             return View();
         }

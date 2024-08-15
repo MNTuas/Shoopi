@@ -12,8 +12,8 @@ namespace Shoopi.Controllers
 		public int PageSize { get; set; } = 3;
 		public int TotalPages { get; set; }
 
-		private readonly IProduct _product;
-		public ProductController(IProduct product) 
+		private readonly IProductRepository _product;
+		public ProductController(IProductRepository product) 
 		{
             _product = product;
 		}

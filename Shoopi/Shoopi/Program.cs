@@ -1,19 +1,20 @@
 using Repository;
 using Repository.IRepository;
 using DAO.Data;
-using Shoopi.Helper;
 using DAO;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Repository.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ShoopiContext>();
-builder.Services.AddScoped<IProduct,ProductRepository>();
-builder.Services.AddScoped<IUser,UserRepository>();
+builder.Services.AddScoped<IProductRepository,ProductRepository>();
+builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddScoped<UserDAO>();
+builder.Services.AddScoped<ProductDAO>();
 
 //authentication dung cookie
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(

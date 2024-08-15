@@ -1,74 +1,25 @@
 ﻿using DAO.Data;
-using DAO.ViewModels;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Shoopi.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAO
 {
 	public class ProductDAO
 	{
 		private readonly ShoopiContext _context;
-		private static ProductDAO instance = null;
-		private ProductDAO()
+
+		public ProductDAO(ShoopiContext context) 
 		{
-			_context = new ShoopiContext();
+			_context = context;
 		}
 
-		public static ProductDAO Instance
+		public async Task<List<Product>> GetAllProductsAsync()
 		{
-			get
-			{
-				if (instance == null)
-				{
-					instance = new ProductDAO();
-				}
-				return instance;
-			}
+			return await _context.Products.ToListAsync();
 		}
 
-		public async Task<ProductResponse> GetProducts(int? type, string query, int pageIndex, int pageSize)
-		{
-			var products = _context.Products.AsQueryable();
-
-			if (!string.IsNullOrEmpty(query))
-			{
-				products = products.Where(p => p.ProductName.Contains(query));
-			}
-
-			if (type.HasValue)
-			{
-				products = products.Where(p => p.TypeId == type.Value);
-			}
-			var count = await products.CountAsync();
-			var totalPages = (int)Math.Ceiling(count / (double)pageSize);
-
-			var result = new ProductResponse
-			{
-				Products = await products.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync(),
-				TotalPages = totalPages,
-				PageIndex = pageIndex
-			};
-			return result;
-		}
-
-		public class ProductResponse
-		{
-			public List<Product> Products { get; set; }
-			public int TotalPages { get; set; }
-			public int PageIndex { get; set; }
-		}
-
-		public async Task<Product> GetProductById(int id)
+		public async Task<Product?> GetProductById(int id)
 		{
 			return await _context.Products.Include(x => x.Type).FirstOrDefaultAsync(p => p.ProductId == id);
 		}
-
-
 	}
 }
