@@ -1,6 +1,5 @@
 ﻿
 using AutoMapper;
-using DAO.AutoMapper;
 using DAO.Data;
 using DAO.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -27,59 +26,18 @@ namespace DAO
 
 
         #region SignUp
-        public async Task SignUp(RegisterVM model)
+        public async Task AddUserAsync(User user)
         {
-            try
-            {
-                var user = _mapper.Map<User>(model);
-                user.RandomKey = MyUtil.GenerateRamdomKey();
-                user.Password = model.Password.ToMd5Hash(user.RandomKey);
-                user.RoleId = 1;
-                user.Status = true;
-
-                _context.Add(user);
-                _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-
+            _context.Users.Add(user);
+			_context.SaveChangesAsync();
         }
         #endregion
 
         #region Login
-        //public async Task<Users> Login(Users model)
-        //{
-        //    var user = _context.Users.SingleOrDefault(x => x.Email == model.Email);
-        //    if (user == null)
-        //    {
-        //        return null;
-        //    }
-        //    else if (user.Password != model.Password.ToMd5Hash(user.RandomKey))
-        //    {
-        //        return null; 
-        //    }
-        //    return user;
-        //}
 
-        public async Task<User> Login(LoginVM model)
+       public async Task<User?> getUserByEmailAsync(string email)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(p => p.Email == model.Email);
-            if (user == null)
-            {
-                throw new InvalidOperationException("User not found.");
-            }
-
-            var hashedPassword = model.Password.ToMd5Hash(user.RandomKey); // Assuming ToMd5Hash uses the password and salt
-            if (user.Password != hashedPassword)
-            {
-                throw new InvalidOperationException("Invalid password.");
-            }
-            model.FullName = user.FullName;
-            model.UserId = user.UserId;
-            return user;
+            return await _context.Users.FirstOrDefaultAsync(p => p.Email == email);
         }
 
         #endregion

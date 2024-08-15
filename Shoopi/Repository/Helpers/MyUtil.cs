@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAO.AutoMapper
+namespace Repository.Helpers
 {
-	internal class MyUtil
+	public class MyUtil
 	{
 		public static string GenerateRamdomKey(int length = 5)
 		{
