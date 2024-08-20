@@ -41,5 +41,10 @@ namespace DAO
         }
 
         #endregion
+
+        public async Task<List<User>> GetAllUser()
+        {
+            return await _context.Users.Include(p => p.Role).OrderBy(p => p.RoleId).ToListAsync();
+        }
     }
 }

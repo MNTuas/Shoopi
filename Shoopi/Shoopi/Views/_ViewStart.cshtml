@@ -1,7 +1,15 @@
 ﻿@{
+    var user = Context.User;
     if (User.Identity.IsAuthenticated)
     {
-        Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
+        if (user.IsInRole("Admin"))
+        {
+            Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+        }
+        else
+        {
+            Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
+        }
     }
     else
     {

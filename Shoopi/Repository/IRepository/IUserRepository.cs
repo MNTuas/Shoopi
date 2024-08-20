@@ -13,7 +13,9 @@ namespace Repository.IRepository
 	{
 		Task<Result<User>> Login(LoginVM model);
 		Task<Result<User>> SignUp(RegisterVM model);
+		Task<List<User>> GetAllUser();
 
 
-	}
+
+    }
 }

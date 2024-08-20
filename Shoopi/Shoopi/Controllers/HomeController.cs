@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Shoopi.Models;
 using System.Diagnostics;
+using System.Net;
 
 namespace Shoopi.Controllers
 {
@@ -23,7 +24,12 @@ namespace Shoopi.Controllers
 			return View();
 		}
 
-		public IActionResult Privacy()
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        public IActionResult Privacy()
         {
             return View();
         }

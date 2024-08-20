@@ -19,5 +19,7 @@ namespace DAO.ViewModels
 
         public string FullName { get; set; } = string.Empty;
         public int UserId { get; set; }
+        public int? RoleId { get; set; }
+
     }
 }

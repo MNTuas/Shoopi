@@ -7,7 +7,6 @@ using Repository.Helpers;
 using Repository.Helpers.Response;
 using Repository.IRepository;
 
-
 namespace Repository
 {
 	public class UserRepository : IUserRepository
@@ -21,7 +20,12 @@ namespace Repository
 			_mapper = mapper;
 		}
 
-		public async Task<Result<User>> Login(LoginVM model)
+        public Task<List<User>> GetAllUser()
+        {
+            return _userDAO.GetAllUser();
+        }
+
+        public async Task<Result<User>> Login(LoginVM model)
 		{
 			var result = new Result<User>();
 			try
@@ -43,6 +47,7 @@ namespace Repository
 				}
 				model.FullName = user.FullName;
 				model.UserId = user.UserId;
+				model.RoleId = user.RoleId;	
 				
 				result.Success = true;
 				result.Data = user;
@@ -73,7 +78,7 @@ namespace Repository
 				var user = _mapper.Map<User>(model);			
 				user.RandomKey = MyUtil.GenerateRamdomKey();
 				user.Password = model.Password.ToMd5Hash(user.RandomKey);
-				user.RoleId = 1;
+				user.RoleId = 2;
 				user.Status = true;
 
 				_userDAO.AddUserAsync(user);
