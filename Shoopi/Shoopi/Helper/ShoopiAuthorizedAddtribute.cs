@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Shared;
 using System.Reflection;
 using System.Security.Claims;
 
@@ -31,7 +32,8 @@ namespace Shoopi.Helper
         {
             if (!context.HttpContext.User.Identity.IsAuthenticated || !CanAccessToAction(context.HttpContext))
             {
-                context.Result = new ForbidResult();
+                //context.Result = new ForbidResult(); //có thể trả về forbidenresult nếu dùng api
+                context.Result = new RedirectToActionResult("AccessDenied", "Home", null);
             }
         }
 

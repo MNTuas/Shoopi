@@ -7,7 +7,6 @@ using Repository.Helpers;
 using Repository.Helpers.Response;
 using Repository.IRepository;
 
-
 namespace Repository
 {
 	public class UserRepository : IUserRepository
@@ -21,7 +20,12 @@ namespace Repository
 			_mapper = mapper;
 		}
 
-		public async Task<Result<User>> Login(LoginVM model)
+        public Task<List<User>> GetAllUser()
+        {
+            return _userDAO.GetAllUser();
+        }
+
+        public async Task<Result<User>> Login(LoginVM model)
 		{
 			var result = new Result<User>();
 			try

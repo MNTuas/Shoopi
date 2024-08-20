@@ -20,7 +20,13 @@ namespace Shoopi.Controllers
         {
 			_userRepository = user;
         }
-
+        
+        [ShoopiAuthorizedAddtribute("Admin","Allowed")] //authorize
+        public async Task<IActionResult> GetUser()
+        {
+            var result = await _userRepository.GetAllUser();
+            return  View(result);
+        }
 
         public IActionResult SignUp()
         {
@@ -56,8 +62,6 @@ namespace Shoopi.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM model, string? ReturnUrl)
         {
-            
-
             ViewBag.ReturnUrl = ReturnUrl;
             if (ModelState.IsValid)
             {

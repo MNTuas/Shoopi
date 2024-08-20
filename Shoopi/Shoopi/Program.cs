@@ -28,12 +28,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/User/AccessDenied";
     });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("EmployeeOnly", policy => policy.RequireClaim("EmployeeNumber"));
-});
-
-builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
 {
