@@ -20,9 +20,18 @@ builder.Services.AddScoped<ProductDAO>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
     options =>
     {
+        options.Cookie = new CookieBuilder()
+        {
+            Name = "SHOOPI"
+        };
         options.LoginPath = "/User/Login";
         options.AccessDeniedPath = "/User/AccessDenied";
     });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("EmployeeOnly", policy => policy.RequireClaim("EmployeeNumber"));
+});
 
 builder.Services.AddDistributedMemoryCache();
 

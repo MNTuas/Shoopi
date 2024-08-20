@@ -43,6 +43,7 @@ namespace Repository
 				}
 				model.FullName = user.FullName;
 				model.UserId = user.UserId;
+				model.RoleId = user.RoleId;	
 				
 				result.Success = true;
 				result.Data = user;
@@ -73,7 +74,7 @@ namespace Repository
 				var user = _mapper.Map<User>(model);			
 				user.RandomKey = MyUtil.GenerateRamdomKey();
 				user.Password = model.Password.ToMd5Hash(user.RandomKey);
-				user.RoleId = 1;
+				user.RoleId = 2;
 				user.Status = true;
 
 				_userDAO.AddUserAsync(user);

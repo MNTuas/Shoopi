@@ -56,11 +56,17 @@ namespace Shoopi.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM model, string? ReturnUrl)
         {
+            
+
             ViewBag.ReturnUrl = ReturnUrl;
             if (ModelState.IsValid)
             {
                 var user = await _userRepository.Login(model);
-                if (user.Success)
+				string rolename = string.Empty;
+				if (model.RoleId == 1)
+					rolename = "Admin";
+				else rolename = "User";
+				if (user.Success)
                 {
                     var claims = new List<Claim> {
                                 new Claim(ClaimTypes.Email, model.Email),
@@ -68,10 +74,17 @@ namespace Shoopi.Controllers
                                 new Claim(MySetting.CLAIM_CUSTOMERID, model.UserId.ToString()),
 
 								//claim - role động
-								new Claim(ClaimTypes.Role, "User")
+								new Claim(ClaimTypes.Role, rolename)
                 };
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+                    var authProperties = new AuthenticationProperties
+                    {
+                        AllowRefresh = true,
+                        ExpiresUtc = DateTime.UtcNow.AddDays(1),
+                        IsPersistent = true, // cho duoc luu o request hay k
+                    };
 
                     await HttpContext.SignInAsync(claimsPrincipal);
 
