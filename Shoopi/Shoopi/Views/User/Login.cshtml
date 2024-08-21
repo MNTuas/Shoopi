@@ -33,7 +33,7 @@
                                 @ViewBag.SuccessMessage
                             </div>
                         }
-                        <form asp-action="Login" method="post" asp-route-returnurl="@ViewBag.ReturnUrl">
+                        <form asp-action="Login" method="post" onsubmit="sendForm(event)" asp-route-returnurl="@ViewBag.ReturnUrl">
 
                             <div class="row gy-3 overflow-hidden">
 
@@ -99,5 +99,15 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function sendForm(e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Lưu thông báo vào LocalStorage
+            localStorage.setItem('showToast', 'true');
+
+            e.target.submit(); // Tiếp tục hành động submit
+    </script>
 </section>
 
