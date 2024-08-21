@@ -11425,7 +11425,7 @@
 </head>
 <body  class="bg-light">
 	<div style="margin-top: 20px" id="checkoutlist" class="container">
-		<form asp-action="CheckOut" asp-controller="Cart">
+		<form asp-action="CheckOut" asp-controller="Cart" id="Submit" onsubmit="sendForm(event) ">
 		<div class="row">
 			<div class="col-md-4 order-md-2 mb-4">
 				<h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -11584,8 +11584,8 @@
 </html>
 
 <script>
-	//an thong tin
-	//xu li trung session info
+	//an thong tin (hide)
+	//xu li trung session info (same info)
 	$(document).ready(function () {
 		$("#same-address").change(function () {
 			if ($(this).prop("checked")) {
@@ -11626,7 +11626,32 @@
 		}
 	};
 
+	//sweetalert
+	function sendForm(e) {
+		e.preventDefault(); // Prevent the default form submission
+		
+		const myForm = document.getElementById("Submit");
+				setTimeout(() => {
+					myForm.submit();
+				}, 3000)
 
+		const Toast = Swal.mixin({
+			toast: true,
+			position: "center",
+			showConfirmButton: false,
+			timer: 3000,
+			timerProgressBar: true,
+			didOpen: (toast) => {
+				toast.onmouseenter = Swal.stopTimer;
+				toast.onmouseleave = Swal.resumeTimer;
+			}
+		});
+		Toast.fire({
+			icon: "success",
+			title: "Purchase successfully"
+		}); 
+
+	}
 
 </script>
 
