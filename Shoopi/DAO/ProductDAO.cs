@@ -5,9 +5,9 @@ namespace DAO
 {
 	public class ProductDAO
 	{
-		private readonly ShoopiContext _context;
+		private readonly Shoopi1Context _context;
 
-		public ProductDAO(ShoopiContext context) 
+		public ProductDAO(Shoopi1Context context) 
 		{
 			_context = context;
 		}

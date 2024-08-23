@@ -15,12 +15,12 @@ namespace DAO
 {
     public class UserDAO
     {
-        private readonly ShoopiContext _context;
+        private readonly Shoopi1Context _context;
         private readonly IMapper _mapper;
         private static UserDAO instance = null;
         public UserDAO(IMapper mapper)
         {
-            _context = new ShoopiContext();
+            _context = new Shoopi1Context();
             _mapper = mapper;
         }
 

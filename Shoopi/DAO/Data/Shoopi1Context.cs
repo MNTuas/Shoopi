@@ -5,13 +5,13 @@ using Microsoft.Extensions.Configuration;
 
 namespace DAO.Data;
 
-public partial class ShoopiContext : DbContext
+public partial class Shoopi1Context : DbContext
 {
-    public ShoopiContext()
+    public Shoopi1Context()
     {
     }
 
-    public ShoopiContext(DbContextOptions<ShoopiContext> options)
+    public Shoopi1Context(DbContextOptions<Shoopi1Context> options)
         : base(options)
     {
     }
@@ -32,24 +32,26 @@ public partial class ShoopiContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-	public static string GetConnectionString(string connectionStringName)
-	{
-		var config = new ConfigurationBuilder()
-			.SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-			.AddJsonFile("appsettings.json")
-			.Build();
+    public virtual DbSet<UserLogin> UserLogins { get; set; }
 
-		string connectionString = config.GetConnectionString(connectionStringName);
-		return connectionString;
-	}
-	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-	  => optionsBuilder.UseSqlServer(GetConnectionString("DefaultConnection"));
+    public static string GetConnectionString(string connectionStringName)
+    {
+        var config = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("appsettings.json")
+            .Build();
 
-	protected override void OnModelCreating(ModelBuilder modelBuilder)
+        string connectionString = config.GetConnectionString(connectionStringName);
+        return connectionString;
+    }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+      => optionsBuilder.UseSqlServer(GetConnectionString("DefaultConnection"));
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Favorite>(entity =>
         {
-            entity.HasKey(e => e.FavoriteId).HasName("PK__Favorite__749FA5A78E7BC294");
+            entity.HasKey(e => e.FavoriteId).HasName("PK__Favorite__749FA5A7C6BE2810");
 
             entity.ToTable("Favorite");
 
@@ -60,7 +62,7 @@ public partial class ShoopiContext : DbContext
 
             entity.HasOne(d => d.Product).WithMany(p => p.Favorites)
                 .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("FK__Favorite__Produc__571DF1D5");
+                .HasConstraintName("FK__Favorite__Produc__59FA5E80");
 
             entity.HasOne(d => d.User).WithMany(p => p.Favorites)
                 .HasForeignKey(d => d.UserId)
@@ -95,7 +97,7 @@ public partial class ShoopiContext : DbContext
 
         modelBuilder.Entity<OrderDetail>(entity =>
         {
-            entity.HasKey(e => e.OrderDetailId).HasName("PK__OrderDet__53D880E018DFB334");
+            entity.HasKey(e => e.OrderDetailId).HasName("PK__OrderDet__53D880E0D6F55459");
 
             entity.ToTable("OrderDetail");
 
@@ -111,12 +113,12 @@ public partial class ShoopiContext : DbContext
 
             entity.HasOne(d => d.Product).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("FK__OrderDeta__Produ__5BE2A6F2");
+                .HasConstraintName("FK__OrderDeta__Produ__5EBF139D");
         });
 
         modelBuilder.Entity<OrderStatus>(entity =>
         {
-            entity.HasKey(e => e.OrderStatusId).HasName("PK__OrderSta__489D9CD23D6DE618");
+            entity.HasKey(e => e.OrderStatusId).HasName("PK__OrderSta__489D9CD2AD3C5E21");
 
             entity.ToTable("OrderStatus");
 
@@ -127,7 +129,7 @@ public partial class ShoopiContext : DbContext
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.ProductId).HasName("PK__Product__9834FB9A4F371679");
+            entity.HasKey(e => e.ProductId).HasName("PK__Product__9834FB9A262F7879");
 
             entity.ToTable("Product");
 
@@ -145,12 +147,12 @@ public partial class ShoopiContext : DbContext
 
             entity.HasOne(d => d.Type).WithMany(p => p.Products)
                 .HasForeignKey(d => d.TypeId)
-                .HasConstraintName("FK__Product__Type_ID__5CD6CB2B");
+                .HasConstraintName("FK__Product__Type_ID__5FB337D6");
         });
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.RoleId).HasName("PK__Role__D80AB49B06273956");
+            entity.HasKey(e => e.RoleId).HasName("PK__Role__D80AB49B663AFDBD");
 
             entity.ToTable("Role");
 
@@ -161,7 +163,7 @@ public partial class ShoopiContext : DbContext
 
         modelBuilder.Entity<Type>(entity =>
         {
-            entity.HasKey(e => e.TypeId).HasName("PK__Type__FE90DDFE241C61E7");
+            entity.HasKey(e => e.TypeId).HasName("PK__Type__FE90DDFE57D0C5BE");
 
             entity.ToTable("Type");
 
@@ -190,9 +192,34 @@ public partial class ShoopiContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.RoleId).HasColumnName("Role_ID");
 
-            entity.HasOne(d => d.Role).WithMany(p => p.Users)
+            // Add mappings for IsGoogleAccount and IsFacebookAccount
+            entity.Property(e => e.IsGoogleAccount).HasColumnName("IsGoogleAccount");
+            entity.Property(e => e.IsFacebookAccount).HasColumnName("IsFacebookAccount");
+
+            entity.HasOne(d => d.Role)
+                .WithMany(p => p.Users)
                 .HasForeignKey(d => d.RoleId)
+                .OnDelete(DeleteBehavior.Restrict) // Adjust as needed
                 .HasConstraintName("FK__User__Role_ID__5DCAEF64");
+        });
+
+
+        modelBuilder.Entity<UserLogin>(entity =>
+        {
+            entity.HasKey(e => e.UserLoginId).HasName("PK__UserLogi__EF923B588508FBE3");
+
+            entity.ToTable("UserLogin");
+
+            entity.Property(e => e.UserLoginId).HasColumnName("UserLogin_ID");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.LoginProvider).HasMaxLength(50);
+            entity.Property(e => e.ProviderKey).HasMaxLength(50);
+            entity.Property(e => e.UserId).HasColumnName("User_ID");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserLogins)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_UserLogin_User");
         });
 
         OnModelCreatingPartial(modelBuilder);
