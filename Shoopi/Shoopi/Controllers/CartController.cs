@@ -10,8 +10,8 @@ namespace Shoopi.wwwroot
     public class CartController : Controller
     {
         private readonly IProductRepository _product;
-        private readonly ShoopiContext _context;
-        public CartController(IProductRepository product, ShoopiContext context)
+        private readonly Shoopi1Context _context;
+        public CartController(IProductRepository product, Shoopi1Context context)
         {
             _context = context;
             _product = product;

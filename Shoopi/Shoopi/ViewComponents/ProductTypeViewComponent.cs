@@ -6,9 +6,9 @@ namespace Shoopi.ViewComponents
 {
     public class ProductTypeViewComponent : ViewComponent
     {
-        private readonly ShoopiContext db;
+        private readonly Shoopi1Context db;
 
-        public ProductTypeViewComponent(ShoopiContext context) => db = context;
+        public ProductTypeViewComponent(Shoopi1Context context) => db = context;
         public IViewComponentResult Invoke()
         {
             var data = db.Types.Select(type => new ProductTypeVM

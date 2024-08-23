@@ -29,9 +29,15 @@ public partial class User
 
     public string? RandomKey { get; set; }
 
+    public bool? IsGoogleAccount { get; set; }
+
+    public bool? IsFacebookAccount { get; set; }
+
     public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     public virtual Role? Role { get; set; }
+
+    public virtual ICollection<UserLogin> UserLogins { get; set; } = new List<UserLogin>();
 }
