@@ -14,6 +14,8 @@ namespace Repository.IRepository
 		Task<Result<User>> Login(LoginVM model);
 		Task<Result<User>> SignUp(RegisterVM model);
 		Task<List<User>> GetAllUser();
+		Task<User?> getUserByEmailAsync(string email);
+		Task<User?> getUserByIdlAsync(int id);
 
 
 

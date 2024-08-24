@@ -113,10 +113,16 @@ namespace Shoopi.wwwroot
                 //lay du lieu tu claim / .value la lay gia tri debug roi biet
                 var customerId = HttpContext.User.Claims
                     .SingleOrDefault(p => p.Type == MySetting.CLAIM_CUSTOMERID)?.Value; 
+                
                 var user = new User();
                 if (model.IsSameInfo)
                 {
-                     user = _context.Users.SingleOrDefault(u => u.UserId.ToString().Equals(customerId)); 
+                    user = _context.Users.SingleOrDefault(u => u.UserId.ToString().Equals(customerId));
+                    if (user.Address == null && user.PhoneNumber == null)
+                    {
+						TempData["Message"] = "Address and Phone Number are both missing.Please update your information";
+						return View(Cart);
+                    } 
                 }
                 var order = new Order()
                 {

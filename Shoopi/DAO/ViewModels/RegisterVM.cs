@@ -10,7 +10,8 @@ namespace DAO.ViewModels
 {
 	public class RegisterVM
 	{
-		[Required]
+        //public int UserId { get; set; }
+        [Required]
 		[MaxLength(20,ErrorMessage = "FullName must be < 20 keys")]
 		public string? FullName { get; set; }
 		

@@ -29,7 +29,7 @@ namespace DAO
         public async Task AddUserAsync(User user)
         {
             _context.Users.Add(user);
-			_context.SaveChangesAsync();
+			await _context.SaveChangesAsync();
         }
         #endregion
 
@@ -45,6 +45,10 @@ namespace DAO
         public async Task<List<User>> GetAllUser()
         {
             return await _context.Users.Include(p => p.Role).OrderBy(p => p.RoleId).ToListAsync();
+        }
+        public async Task<User?> getUserByIdlAsync(int id)
+        {
+            return await _context.Users.FirstOrDefaultAsync(p => p.UserId == id);
         }
     }
 }
