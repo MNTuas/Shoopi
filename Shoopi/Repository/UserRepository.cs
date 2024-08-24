@@ -13,16 +13,28 @@ namespace Repository
 	{
 		private readonly UserDAO _userDAO;
 		private readonly IMapper _mapper;
+        private readonly Shoopi1Context _context;
 
-		public UserRepository(UserDAO userDAO, IMapper mapper)
+        public UserRepository(UserDAO userDAO, IMapper mapper, Shoopi1Context context)
 		{
 			_userDAO = userDAO;
 			_mapper = mapper;
+			_context = context;
 		}
 
         public Task<List<User>> GetAllUser()
         {
             return _userDAO.GetAllUser();
+        }
+
+        public Task<User?> getUserByEmailAsync(string email)
+        {
+            return _userDAO.getUserByEmailAsync(email);
+        }
+
+        public Task<User?> getUserByIdlAsync(int id)
+        {
+            return _userDAO.getUserByIdlAsync(id);
         }
 
         public async Task<Result<User>> Login(LoginVM model)
@@ -75,13 +87,17 @@ namespace Repository
 					return result;
 				}
 
-				var user = _mapper.Map<User>(model);			
-				user.RandomKey = MyUtil.GenerateRamdomKey();
-				user.Password = model.Password.ToMd5Hash(user.RandomKey);
-				user.RoleId = 2;
+				var user = _mapper.Map<User>(model);
+				if (model.Password != null)
+				{                    
+                    user.Password = model.Password.ToMd5Hash(user.RandomKey);
+                }
+                user.RandomKey = MyUtil.GenerateRamdomKey();
+                user.RoleId = 2;
 				user.Status = true;
-
-				_userDAO.AddUserAsync(user);
+				user.IsGoogleAccount = false;
+				user.IsFacebookAccount = false;
+				await _userDAO.AddUserAsync(user);
 				result.Success = true;
 				result.Data= user;
 			}

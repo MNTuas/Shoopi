@@ -11474,6 +11474,13 @@
 						<input value="false" type="checkbox" class="custom-control-input" id="same-address" name="IsSameInfo">
 						<label class="custom-control-label" for="same-address">Use my information</label>
 					</div>
+					@if (TempData["Message"] != null)
+					{
+						<div class="alert alert-warning">
+							@TempData["Message"] <br /> 
+							<a asp-action="UpdateUser" asp-controller="User">Click here to update</a>
+						</div>
+					}
 					<hr class="mb-4">
 					<div class="info">
 						<div class="mb-3">

@@ -4,6 +4,7 @@ using DAO.Data;
 using DAO;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Repository.Helpers;
+using Microsoft.AspNetCore.Authentication.Google;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +18,13 @@ builder.Services.AddScoped<UserDAO>();
 builder.Services.AddScoped<ProductDAO>();
 
 //authentication dung cookie
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
-    options =>
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;  // Thêm dòng này
+})
+    .AddCookie(options =>
     {
         options.Cookie = new CookieBuilder()
         {
@@ -26,7 +32,13 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         };
         options.LoginPath = "/User/Login";
         options.AccessDeniedPath = "/User/AccessDenied";
+    })
+    .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+    {
+        options.ClientId = builder.Configuration["GoogleKeys:ClientId"];
+        options.ClientSecret = builder.Configuration["GoogleKeys:ClientSecret"];
     });
+
 
 
 builder.Services.AddSession(options =>
