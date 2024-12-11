@@ -191,7 +191,7 @@ namespace Shoopi.wwwroot
 				{
 					var vnPayModel = new VnPaymentRequestModel
 					{
-						Amount = (double)Cart.Sum(p => p.Price),
+						Amount = (double)Cart.Sum(p => p.Price * p.Quantity),
 						CreatedDate = DateTime.Now,
 						Description = $"{model.FullName} {model.PhoneNumber}",
 						FullName = model.FullName,
@@ -235,21 +235,22 @@ namespace Shoopi.wwwroot
 		{
 			var response = _vnPayservice.PaymentExecute(Request.Query);
 
-			var orderId = int.Parse(response.OrderId);
+			//tìm order để sửa lại status order
+			var orderId = int.Parse(response.OrderDescription);
 			var order = _context.Orders.FirstOrDefault(x => x.OrderId == orderId);
 
 
 			if (response == null || response.VnPayResponseCode != "00" || order == null)
 			{
-				TempData["Message"] = $"Lỗi thanh toán VN Pay: {response.VnPayResponseCode}";
-				order.OrderStatusId = 3;
-				_context.Update(order);
+				TempData["Message"] = $"Lỗi thanh toán VN Pay: {response.VnPayResponseCode}";				
 				return RedirectToAction("PaymentFail");
 			}
 
+			order.OrderStatusId = 7;
+			_context.Update(order);
+			_context.SaveChanges();	
 
 			// Lưu đơn hàng vô database
-
 			TempData["Message"] = $"Thanh toán VNPay thành công";
 			return RedirectToAction("PaymentSuccess");
 		}

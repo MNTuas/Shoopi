@@ -30,7 +30,7 @@
 											<i class="far fa-window-close"></i></a></td>
 									<td class="product-image"><img src="~/assets/img/products/product-img-1.jpg" alt=""></td>
 									<td class="product-name">@item.Name</td>
-									<td class="product-price">@item.Price</td>
+									<td class="product-price">@(Convert.ToDecimal(item.Price).ToString("N0")) VND</td>
 									<td class="product-quantity"><input type="number" placeholder="@item.Quantity"></td>
 									
 								</tr>
@@ -53,7 +53,9 @@
 							
 							<tr class="total-data">
 								<td><strong>Subtotal: </strong></td>
-								<td>@Model.Sum(p => p.Price * p.Quantity)</td>
+								<td>@Model.Sum(p => p.Price * p.Quantity).ToString("N0") VND</td>
+
+
 							</tr>
 							<tr class="total-data">
 								<td><strong>Shipping: </strong></td>
@@ -61,7 +63,9 @@
 							</tr>
 							<tr class="total-data">
 								<td><strong>Total: </strong></td>
-								<td>@Model.Sum(p => p.Price * p.Quantity)</td>
+								<td>@Model.Sum(p => p.Price * p.Quantity).ToString("N0") VND</td>
+
+
 							</tr>
 						</tbody>
 					</table>
