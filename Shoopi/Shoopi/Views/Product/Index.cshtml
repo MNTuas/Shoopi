@@ -22,11 +22,15 @@
                     <div class="single-product-item">
                         <div class="product-image">
                             <a asp-action="ProductDetail" asp-controller="Product" asp-route-id="@item.ProductId">
-                                <img src="assets/img/products/product-img-1.jpg" alt="">
+                                <img src="assets/img/3aadf6f3d5f31097027574351e0b0b75.jpg" alt="">
                             </a>
                         </div>
                         <h3>@item.ProductName</h3>
-                        <p class="product-price"><span>Per Kg</span> @item.Price </p>
+                        <p class="product-price">
+                            <span>Per Kg</span> @(Convert.ToDecimal(item.Price).ToString("N0")) VND
+                        </p>
+
+
                         <a class="cart-btn" onclick="addToCart(@item.ProductId, 1)">Add to Cart</a>
 
                        

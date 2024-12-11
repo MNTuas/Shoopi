@@ -5,16 +5,21 @@ using DAO.Data;
 using Shoopi.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using Repository.PaymentService;
 namespace Shoopi.wwwroot
 {
     public class CartController : Controller
     {
         private readonly IProductRepository _product;
         private readonly Shoopi1Context _context;
-        public CartController(IProductRepository product, Shoopi1Context context)
+		private readonly IVnPayService _vnPayservice;
+
+
+		public CartController(IProductRepository product, Shoopi1Context context, IVnPayService vnPayservice)
         {
             _context = context;
             _product = product;
+            _vnPayservice = vnPayservice;
         }
 
         
@@ -106,83 +111,150 @@ namespace Shoopi.wwwroot
 
         [Authorize]
         [HttpPost]
-        public IActionResult CheckOut(CheckoutVM model)
-        {
-            if (ModelState.IsValid)
-            {
-                //lay du lieu tu claim / .value la lay gia tri debug roi biet
-                var customerId = HttpContext.User.Claims
-                    .SingleOrDefault(p => p.Type == MySetting.CLAIM_CUSTOMERID)?.Value; 
-                
-                var user = new User();
-                if (model.IsSameInfo)
-                {
-                    user = _context.Users.SingleOrDefault(u => u.UserId.ToString().Equals(customerId));
-                    if (user.Address == null && user.PhoneNumber == null)
-                    {
-						TempData["Message"] = "Address and Phone Number are both missing.Please update your information";
-						return View(Cart);
-                    } 
-                }
-                var order = new Order()
-                {
-                    UserId = int.Parse(customerId),
-                    FullName = model.FullName ?? user.FullName,
-                    Address = model.Address ?? user.Address,
-                    PhoneNumber = model.PhoneNumber ?? user.PhoneNumber,
-                    Delivery = "GRAB",
-                    CreateDate = DateOnly.FromDateTime(DateTime.Now),
-                    MethodPayment = model.MethodPayment,
-                    Note = model.Note,
-                    OrderStatusId = 1
-                };
-                    // bat dau transaction phai hoan thanh HET thi moi thay doi (change)
-                   _context.Database.BeginTransaction();
-                try
-                {
-                    _context.Database.CommitTransaction();
-                    _context.Add(order);
-                    _context.SaveChanges(); 
+		public IActionResult CheckOut(CheckoutVM model, string payment = "VnPay")
+		{
+			if (!ModelState.IsValid)
+			{
+				return View(Cart);
+			}
 
-                    //xoa quantity trong product
-                    var product = new Product();
-                    foreach (var pr in Cart)
-                    {
-                        product = _context.Products.SingleOrDefault(p => p.ProductId == pr.ProductID);
-                        product.Quantity = product.Quantity - pr.Quantity;
-                    }
-                    _context.Update(product);
-                    _context.SaveChanges();
+			// Lấy thông tin từ claim
+			var customerId = HttpContext.User.Claims
+				.SingleOrDefault(p => p.Type == MySetting.CLAIM_CUSTOMERID)?.Value;
 
-                    //add thong tin ben order detail
-                    var orderDetail = new List<OrderDetail>();
-                    foreach (var item in Cart)
-                    {
-                        orderDetail.Add(new OrderDetail()
-                        {
-                            OrderId = order.OrderId,
-                            ProductId = item.ProductID,
-                            Quantity = item.Quantity,
-                            Discount = 0,
-                            TotalPrice = item.Price,
-                        });
-                    }
-                    _context.AddRange(orderDetail);
-                    _context.SaveChanges();
-                    //xoa session
-                    HttpContext.Session.Set<List<CartVM>>(MySetting.CART_KEY, new List<CartVM>()) ;
-                    return RedirectToAction("Index", "Product");
-                }
-                catch (Exception ex) 
-                {
-                    _context.Database.RollbackTransaction();
-                }
-               
-            }
-            return View(Cart);
-        }
+			if (customerId == null)
+			{
+				TempData["Message"] = "Không thể xác định khách hàng.";
+				return View(Cart);
+			}
+
+			var user = new User();
+			if (model.IsSameInfo)
+			{
+				user = _context.Users.SingleOrDefault(u => u.UserId.ToString().Equals(customerId));
+				if (user == null || user.Address == null || user.PhoneNumber == null)
+				{
+					TempData["Message"] = "Địa chỉ và số điện thoại của bạn bị thiếu. Vui lòng cập nhật thông tin.";
+					return View(Cart);
+				}
+			}
+
+			// Tạo đơn hàng
+			var order = new Order
+			{
+				UserId = int.Parse(customerId),
+				FullName = model.FullName ?? user.FullName,
+				Address = model.Address ?? user.Address,
+				PhoneNumber = model.PhoneNumber ?? user.PhoneNumber,
+				Delivery = "GRAB",
+				CreateDate = DateOnly.FromDateTime(DateTime.Now),
+				MethodPayment = model.MethodPayment,
+				Note = model.Note,
+				OrderStatusId = 1
+			};
+
+			using var transaction = _context.Database.BeginTransaction();
+			try
+			{
+				// Thêm đơn hàng vào DB
+				_context.Add(order);
+				_context.SaveChanges();
+
+				// Cập nhật số lượng sản phẩm
+				foreach (var pr in Cart)
+				{
+					var product = _context.Products.SingleOrDefault(p => p.ProductId == pr.ProductID);
+					if (product == null || product.Quantity < pr.Quantity)
+					{
+						throw new Exception($"Sản phẩm {pr.ProductID} không đủ số lượng.");
+					}
+					product.Quantity -= pr.Quantity;
+					_context.Update(product);
+				}
+				_context.SaveChanges();
+
+				// Thêm thông tin chi tiết đơn hàng
+				var orderDetails = Cart.Select(item => new OrderDetail
+				{
+					OrderId = order.OrderId,
+					ProductId = item.ProductID,
+					Quantity = item.Quantity,
+					Discount = 0,
+					TotalPrice = item.Price
+				}).ToList();
+
+				_context.AddRange(orderDetails);
+				_context.SaveChanges();
+
+				// Xử lý thanh toán VNPay
+				if (payment.Trim() == "VnPay")
+				{
+					var vnPayModel = new VnPaymentRequestModel
+					{
+						Amount = (double)Cart.Sum(p => p.Price * p.Quantity),
+						CreatedDate = DateTime.Now,
+						Description = $"{model.FullName} {model.PhoneNumber}",
+						FullName = model.FullName,
+						OrderId = order.OrderId
+					};
+
+					transaction.Commit(); // Commit trước khi chuyển hướng
+					return Redirect(_vnPayservice.CreatePaymentUrl(HttpContext, vnPayModel));
+				}
+
+				// Xóa giỏ hàng và commit giao dịch
+				HttpContext.Session.Set<List<CartVM>>(MySetting.CART_KEY, new List<CartVM>());
+				transaction.Commit();
+				return RedirectToAction("Index", "Product");
+			}
+			catch (Exception ex)
+			{
+				transaction.Rollback();
+				TempData["Message"] = "Đã xảy ra lỗi trong quá trình thanh toán. Vui lòng thử lại.";
+				return View(Cart);
+			}
+		}
+
 
 		#endregion
+
+		[Authorize]
+		public IActionResult PaymentFail()
+		{
+			return View();
+		}
+
+		[Authorize]
+		public IActionResult PaymentSuccess()
+		{
+			return View();
+		}
+
+		[Authorize]
+		public IActionResult PaymentCallBack()
+		{
+			var response = _vnPayservice.PaymentExecute(Request.Query);
+
+			//tìm order để sửa lại status order
+			var orderId = int.Parse(response.OrderDescription);
+			var order = _context.Orders.FirstOrDefault(x => x.OrderId == orderId);
+
+
+			if (response == null || response.VnPayResponseCode != "00" || order == null)
+			{
+				TempData["Message"] = $"Lỗi thanh toán VN Pay: {response.VnPayResponseCode}";				
+				return RedirectToAction("PaymentFail");
+			}
+
+			order.OrderStatusId = 7;
+			_context.Update(order);
+			_context.SaveChanges();	
+
+			// Lưu đơn hàng vô database
+			TempData["Message"] = $"Thanh toán VNPay thành công";
+			return RedirectToAction("PaymentSuccess");
+		}
+
 
 	}
 

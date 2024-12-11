@@ -5,6 +5,7 @@ using DAO;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Repository.Helpers;
 using Microsoft.AspNetCore.Authentication.Google;
+using Repository.PaymentService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +48,11 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+//vnpay service
+builder.Services.AddSingleton<IVnPayService, VnPayService>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
