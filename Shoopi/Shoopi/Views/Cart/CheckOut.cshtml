@@ -11528,9 +11528,10 @@
 							<input value="COD"  id="cod" name="MethodPayment" type="radio" class="custom-control-input">
 							<label class="custom-control-label" for="cod">COD</label>
 						</div>
+						<!--vnpay-->
 						<div class="custom-control custom-radio ">
-							<input value="VNPay" id="debit" name="MethodPayment" type="radio" class="custom-control-input" >
-							<label class="custom-control-label" for="debit">VNPay</label>
+							<input value="VNPay" id="vnpay" name="MethodPayment" type="radio" class="custom-control-input" >
+							<label class="custom-control-label" for="vnpay">VNPay</label>
 						</div>
 						<div class="custom-control custom-radio">
 							<input value="Paypal" id="paypal" name="MethodPayment" type="radio" class="custom-control-input">
@@ -11573,7 +11574,9 @@
 						</div>
 					</div>
 					<hr class="mb-4">
-					<button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+
+					<button id="btnvnpay" type="submit" name="payment" class="btn btn-primary btn-lg btn-block" >VNPay</button>
+					<button id="btncheckout" class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
 				
 			</div>
 		</div>
@@ -11604,22 +11607,41 @@
 			}
 		});
 	});
+
 	//xu li payment menthod
 	$(document).ready(function () {
+		//add là ẩn , remove là hiện lại
+		//xử lý cod
 		$("#cod").change(function () {
 			if ($(this).prop("checked")) {
 				$(".payment").addClass("d-none");
+				$("#btnvnpay").addClass("d-none"); 
+				$("#btncheckout").removeClass("d-none");
 			}
 		});
-		// hien lai cho ghi payment
-		$("#debit, #paypal").change(function () {
+
+		//xử lý button VNPay
+		$("#vnpay").change(function () {
+			if ($(this).prop("checked")) {
+				$("#btnvnpay").removeClass("d-none");
+				$("#btncheckout").addClass("d-none");
+			}
+		});
+
+		// xử lý paypal
+		$("#paypal").change(function () {
 			if ($(this).prop("checked")) {
 				$(".payment").removeClass("d-none");
 			}
 		});
+
+		
 	});
 
 
+
+
+	//kéo xuống giữa trang
 	window.onload = function () {
 		var element = document.getElementById("checkoutlist");
 		if (element) {
@@ -11634,31 +11656,31 @@
 	};
 
 	//sweetalert
-	function sendForm(e) {
-		e.preventDefault(); // Prevent the default form submission
+	// function sendForm(e) {
+	// 	e.preventDefault(); // Prevent the default form submission
 		
-		const myForm = document.getElementById("Submit");
-				setTimeout(() => {
-					myForm.submit();
-				}, 3000)
+	// 	const myForm = document.getElementById("Submit");
+	// 			setTimeout(() => {
+	// 				myForm.submit();
+	// 			}, 3000)
 
-		const Toast = Swal.mixin({
-			toast: true,
-			position: "center",
-			showConfirmButton: false,
-			timer: 3000,
-			timerProgressBar: true,
-			didOpen: (toast) => {
-				toast.onmouseenter = Swal.stopTimer;
-				toast.onmouseleave = Swal.resumeTimer;
-			}
-		});
-		Toast.fire({
-			icon: "success",
-			title: "Purchase successfully"
-		}); 
+	// 	const Toast = Swal.mixin({
+	// 		toast: true,
+	// 		position: "center",
+	// 		showConfirmButton: false,
+	// 		timer: 3000,
+	// 		timerProgressBar: true,
+	// 		didOpen: (toast) => {
+	// 			toast.onmouseenter = Swal.stopTimer;
+	// 			toast.onmouseleave = Swal.resumeTimer;
+	// 		}
+	// 	});
+	// 	Toast.fire({
+	// 		icon: "success",
+	// 		title: "Purchase successfully"
+	// 	}); 
 
-	}
+	// }
 
 </script>
 
