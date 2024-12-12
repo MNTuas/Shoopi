@@ -130,7 +130,7 @@ namespace Shoopi.Controllers
             var authenticateResult = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             if (!authenticateResult.Succeeded || authenticateResult.Principal == null)
             {
-                // Handle unsuccessful authentication
+               
                 return RedirectToAction("Login", "User");
             }
 
@@ -138,7 +138,7 @@ namespace Shoopi.Controllers
             var googleClaims = authenticateResult.Principal.Identities.FirstOrDefault()?.Claims.ToList();
             if (googleClaims == null)
             {
-                // Handle missing claims
+               
                 return RedirectToAction("Error", "Home");
             }
 
@@ -158,11 +158,11 @@ namespace Shoopi.Controllers
             //nếu ko có user trong dtb thì tạo 1 user mới 
             if (existingUser == null)
             {
-                // Register new user
+                
                 var newUser = new RegisterVM
                 {
                     Email = email,
-                    FullName = name ?? "Default Name" // Default name if not provided
+                    FullName = name ?? "Default Name" 
                 };
 
                 using var transaction = await _context.Database.BeginTransactionAsync();
@@ -208,7 +208,7 @@ namespace Shoopi.Controllers
                 catch (Exception ex)
                 {
                     await transaction.RollbackAsync();
-                    // Handle exception (log error, etc.)
+                   
                 }
             }
 

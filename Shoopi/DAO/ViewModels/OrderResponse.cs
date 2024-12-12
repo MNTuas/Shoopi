@@ -20,8 +20,8 @@ namespace DAO.ViewModels
         public string FullName { get; set; }
         public string MethodPayment { get; set; }
         public string PhoneNumber { get; set; }
-
         public string OrderStatus { get; set; }
+        public decimal TotalPrice { get; set; }
 
         public List<OrderDetailViewModel> OrderDetails { get; set; } = new List<OrderDetailViewModel>();
     }

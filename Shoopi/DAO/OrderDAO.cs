@@ -23,17 +23,31 @@ namespace DAO
 				.Include(x => x.OrderDetails)
 					.ThenInclude(o => o.Product)
 				.Include(u => u.OrderStatus)
+				.OrderByDescending(o => o.OrderId)
 				.ToListAsync();
 		}
 
 		public async Task<Order?> GetOrderById(int id)
 		{
-			return await _context.Orders.Include(x => x.OrderDetails).FirstOrDefaultAsync(p => p.OrderId == id);
+			return await _context.Orders
+				.Include(x => x.OrderDetails)
+                    .ThenInclude(o => o.Product)
+                .Include(u => u.OrderStatus)
+                .OrderByDescending(o => o.OrderId)
+
+                .FirstOrDefaultAsync(p => p.OrderId == id);
 		}
 			
-		public async Task<Order?> GetOrderByUserLogin(int userId)
+		public async Task<List<Order?>> GetOrderByUserLogin(int userId)
 		{
-			return await _context.Orders.Include(x =>x.OrderDetails).FirstOrDefaultAsync(x => x.UserId == userId);
-		}
+			return await _context.Orders
+				.Include(x => x.OrderDetails)
+                    .ThenInclude(o => o.Product)
+                .Include(u => u.OrderStatus)
+                 .Where(p => p.UserId == userId)
+                .OrderByDescending(o => o.OrderId)
+				.ToListAsync();
+
+        }
 	}
 }

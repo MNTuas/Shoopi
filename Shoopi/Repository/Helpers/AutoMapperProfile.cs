@@ -15,6 +15,8 @@ namespace Repository.Helpers
 		{
 			CreateMap<RegisterVM, User>();
 
+            CreateMap<CheckoutVM, OrderDetail>();
+
             // Ánh xạ từ Order sang OrderViewModel
             CreateMap<Order, OrderViewModel>()
                 .ForMember(dest => dest.OrderDetails, opt => opt.MapFrom(src => src.OrderDetails))

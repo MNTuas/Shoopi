@@ -1,6 +1,8 @@
 ﻿@model DAO.ViewModels.OrderResponse
 @{
+
     ViewData["Title"] = "Index";
+  
 }
 
 <style>
@@ -93,6 +95,12 @@
 
 <div class="container">
     <h1>Your Orders</h1>
+    @if (TempData["NoOrdersMessage"] != null)
+    {
+        <div class="alert alert-info">
+            @TempData["NoOrdersMessage"]
+        </div>
+    }
 
     @foreach (var order in Model.Orders)
     {
@@ -109,12 +117,16 @@
                             @foreach (var item in order.OrderDetails)
                             {
                                 <div class="order-item">
-                                    <span class="item-name">@item.ProductName x </span>
-                                    <span class="item-quantity">@item.Quantity</span>
-                                    <span class="item-quantity"> - @item.TotalPrice </span>
+                                    <span class="item-name">@item.ProductName x @item.Quantity</span>
+                                    <span class="item-quantity"> - @item.TotalPrice.ToString("#,##0") VND </span>
                                 </div>
                                 
                             }
+                            
+                        </div>
+                        <div class="order-total">
+                            Total price: @order.TotalPrice.ToString("#,##0") VND
+
                         </div>
                     </div>
 

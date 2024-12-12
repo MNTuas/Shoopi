@@ -1,6 +1,9 @@
 ﻿using DAO.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Repository.IRepository;
+using Shoopi.Helper;
 
 namespace Shoopi.Controllers
 {
@@ -17,16 +20,29 @@ namespace Shoopi.Controllers
             _orderRepository = Order;
 		}
 		public IList<Order> Orders { get; set; } = default!;
-		public async Task<IActionResult> Index(int? type, string query, int PageIndex = 1)
+
+		[Authorize]
+		public async Task<IActionResult> Index( int? type, string query, int PageIndex = 1)
 		{
-			var result = await _orderRepository.GetOrders(type, query, PageIndex, 6);		
+            // Lấy thông tin từ claim
+            var userId = int.Parse(HttpContext.User.Claims
+                .SingleOrDefault(p => p.Type == MySetting.CLAIM_CUSTOMERID)?.Value);
+
+            var result = await _orderRepository.GetOrderByUserLogin(userId, type, query, PageIndex, 6);
+			if (!result.Orders.Any())
+			{
+                TempData["NoOrdersMessage"] = "You don't have any orders.";
+            }
 			PageIndex = result.PageIndex;
 			TotalPages = result.TotalPages;
 
 			return View(result);
 		}
 
-		public async Task<IActionResult> OrderDetail(int id)
+
+        
+		[Authorize]
+        public async Task<IActionResult> OrderDetail(int id)
 		{
 			if (id == null)
 			{

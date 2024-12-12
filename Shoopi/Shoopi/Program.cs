@@ -51,6 +51,8 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+builder.Services.AddHttpContextAccessor();
+
 //vnpay service
 builder.Services.AddSingleton<IVnPayService, VnPayService>();
 
