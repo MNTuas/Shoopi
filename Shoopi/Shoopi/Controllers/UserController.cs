@@ -24,6 +24,7 @@ namespace Shoopi.Controllers
 			_userRepository = user;
             _context = context;
         }
+
         
         [ShoopiAuthorizedAddtribute("Admin","Allowed")] //authorize
         public async Task<IActionResult> GetUser()
@@ -114,8 +115,7 @@ namespace Shoopi.Controllers
             }
             return View();
         }
-
-        
+       
         public async Task LoginByGoogle()
         {
             await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new AuthenticationProperties
@@ -253,7 +253,6 @@ namespace Shoopi.Controllers
             // Redirect to the home page
             return RedirectToAction("Index", "Home");
         }
-
         
         [Authorize]
         public async Task<IActionResult> LogOut()

@@ -14,9 +14,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<Shoopi1Context>();
 builder.Services.AddScoped<IProductRepository,ProductRepository>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();
+builder.Services.AddScoped<IOrderRepository,OrderRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddScoped<UserDAO>();
 builder.Services.AddScoped<ProductDAO>();
+builder.Services.AddScoped<OrderDAO>();
 
 //authentication dung cookie
 builder.Services.AddAuthentication(options =>
