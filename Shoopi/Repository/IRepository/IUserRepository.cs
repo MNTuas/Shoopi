@@ -1,5 +1,6 @@
 ﻿using DAO.Data;
 using DAO.ViewModels;
+using DAO.ViewModels.Request;
 using Repository.Helpers.Response;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,8 @@ namespace Repository.IRepository
 		Task<List<User>> GetAllUser();
 		Task<User?> getUserByEmailAsync(string email);
 		Task<User?> getUserByIdlAsync(int id);
-
+		Task<User?> getUserByLogin(int userId);
+		Task<User?> UpdateUser(int userId, UserUpdateRequest userUpdateRequest);
 
 
     }

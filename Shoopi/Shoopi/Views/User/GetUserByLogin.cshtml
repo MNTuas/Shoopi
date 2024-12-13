@@ -1,0 +1,200 @@
+﻿@model DAO.Data.User
+@{
+    ViewData["Title"] = "User Information";
+}
+
+
+<link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/components/registrations/registration-12/assets/css/registration-12.css">
+<style>
+    .profile-picture-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .profile-picture {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid #ccc;
+    }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+    .edit-icon {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        font-size: 12px;
+        padding: 5px 10px;
+        border-radius: 20px;
+        cursor: pointer;
+        text-align: center;
+        opacity: 0.8;
+    }
+
+        .edit-icon:hover {
+            opacity: 1;
+        }
+
+    input[type="file"] {
+        display: none; /* Ẩn input file */
+    }
+
+</style>
+<!-- Registration 12 - Bootstrap Brain Component -->
+<section class="py-3 py-md-5 py-xl-8">
+    <div id="userinfor" class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-5">
+                    <h2 style="color:orange" class="display-5 fw-bold text-center">Your information</h2>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10 col-xl-8">
+                <div class="row gy-5 justify-content-center">
+                    <div class="col-12 col-lg-5">
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-danger">
+                                @TempData["ErrorMessage"]
+                            </div>
+                        }
+
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert alert-success">
+                                @TempData["SuccessMessage"]
+                            </div>
+                        }
+
+                        
+                        <form asp-action="UpdateUser" method="post" >
+                            <div class="row gy-3 overflow-hidden">
+
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control border-0 border-bottom rounded-0" asp-for="@Model.FullName" id="fullname" type="text" class="input">
+                                        <span asp-validation-for="@Model.FullName" class="text-danger"></span>
+                                        <label for="fullName" class="form-label">Full Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                       
+                                        <input readonly class="form-control border-0 border-bottom rounded-0" asp-for="@Model.Email" id="email" type="text" class="input">
+                                        <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                                        <label for="email" class="label">Email Address</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+
+                                        <input class="form-control border-0 border-bottom rounded-0" asp-for="@Model.Address" id="address" type="text" class="input">
+                                        <span asp-validation-for="@Model.Address" class="text-danger"></span>
+                                        <label for="address" class="label">Address</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+
+                                        <input class="form-control border-0 border-bottom rounded-0" asp-for="@Model.PhoneNumber" id="phonenumber" type="text" class="input">
+                                        <span asp-validation-for="@Model.PhoneNumber" class="text-danger"></span>
+                                        <label for="phonenumber" class="label">Phone Number</label>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <span asp-validation-for="@Model.Birthday" class="text-danger"></span>
+                                        <input class="form-control border-0 border-bottom rounded-0" asp-for="@Model.Birthday" id="birthday" type="date" class="input">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select border-0 border-bottom rounded-0" asp-for="@Model.Gender" id="gender">
+                                            <option value="" disabled selected>Select Gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="other">Transformer</option>
+                                        </select>
+                                        <label for="gender" class="form-label">Gender</label>
+                                    </div>
+                                </div>
+                               
+                                
+                            </div>
+                            <div class="col-12">
+                                <div class="d-grid">
+                                    <button class="btn btn-lg btn-dark rounded-0 fs-6" type="submit">Update</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-12 col-lg-2 d-flex align-items-center justify-content-center gap-3 flex-lg-column">
+                        <div class="bg-dark h-100 d-none d-lg-block" style="width: 1px; --bs-bg-opacity: .1;"></div>
+                        <div class="bg-dark w-100 d-lg-none" style="height: 1px; --bs-bg-opacity: .1;"></div>
+                        <div>and</div>
+                        <div class="bg-dark h-100 d-none d-lg-block" style="width: 1px; --bs-bg-opacity: .1;"></div>
+                        <div class="bg-dark w-100 d-lg-none" style="height: 1px; --bs-bg-opacity: .1;"></div>
+                    </div>
+                    
+                    <div class="col-12 col-lg-5 d-flex align-items-center">
+                    <div class="profile-picture-container">
+                        <div class="profile-picture">
+                            <img id="avatar-preview" src="default-avatar.png" alt="Profile Picture">
+                            <label for="avatar-upload" class="edit-icon">
+                                <span>Edit</span>
+                            </label>
+                        </div>
+                        <input type="file" id="avatar-upload" name="avatar" accept="image/*" onchange="previewAvatar(event)">
+                    </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function previewAvatar(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('avatar-preview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+    window.onload = function () {
+        var element = document.getElementById("userinfor");
+        if (element) {
+            var elementPosition = element.getBoundingClientRect().top;
+            var offsetPosition = elementPosition + window.pageYOffset - (window.innerHeight / 2) + (element.offsetHeight / 2) - 50;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+    };
+</script>

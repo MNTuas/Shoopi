@@ -28,7 +28,8 @@ namespace Shoopi.wwwroot
         public List<Product> Product;
 
         #region CART
-        [Authorize]
+        
+		[Authorize]
         public IActionResult Index()
         {
             if (Cart.Count == 0)
@@ -217,7 +218,6 @@ namespace Shoopi.wwwroot
 			}
 		}
 
-
 		#endregion
 
 		[Authorize]
@@ -256,7 +256,6 @@ namespace Shoopi.wwwroot
 			TempData["Message"] = $"Thanh toán VNPay thành công";
 			return RedirectToAction("PaymentSuccess");
 		}
-
 
 	}
 

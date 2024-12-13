@@ -2,6 +2,7 @@
 using DAO;
 using DAO.Data;
 using DAO.ViewModels;
+using DAO.ViewModels.Request;
 using Microsoft.EntityFrameworkCore;
 using Repository.Helpers;
 using Repository.Helpers.Response;
@@ -37,79 +38,91 @@ namespace Repository
             return _userDAO.getUserByIdlAsync(id);
         }
 
+        public Task<User?> getUserByLogin(int userId)
+        {
+			return _userDAO.getUserByLogin(userId);
+        }
+
+        public Task<User?> UpdateUser(int userId, UserUpdateRequest userUpdateRequest)
+        {
+            return _userDAO.UpdateUser(userId, userUpdateRequest);
+        }
+
+        #region Authorize repo
         public async Task<Result<User>> Login(LoginVM model)
-		{
-			var result = new Result<User>();
-			try
-			{
-				var user = await _userDAO.getUserByEmailAsync(model.Email);
-				if (user == null)
-				{
-					result.Success = false;
-					result.ErrorMessage = "User not found";
-					return result;
-				}
+        {
+            var result = new Result<User>();
+            try
+            {
+                var user = await _userDAO.getUserByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    result.Success = false;
+                    result.ErrorMessage = "User not found";
+                    return result;
+                }
 
-				var hashedPassword = model.Password.ToMd5Hash(user.RandomKey); 
-				if (user.Password != hashedPassword)
-				{
-					result.Success = false;
-					result.ErrorMessage = "Email or Password incorrect!!!";
-					return result;
-				}
-				model.FullName = user.FullName;
-				model.UserId = user.UserId;
-				model.RoleId = user.RoleId;	
-				
-				result.Success = true;
-				result.Data = user;
-			}
-			catch (Exception ex)
-			{
-				result.Success = false;
-				result.ErrorMessage = "Something wrong!!";
-				return result;
-			}
-			
-			return result;
-		}
+                var hashedPassword = model.Password.ToMd5Hash(user.RandomKey);
+                if (user.Password != hashedPassword)
+                {
+                    result.Success = false;
+                    result.ErrorMessage = "Email or Password incorrect!!!";
+                    return result;
+                }
+                model.FullName = user.FullName;
+                model.UserId = user.UserId;
+                model.RoleId = user.RoleId;
 
-		public async Task<Result<User>> SignUp(RegisterVM model)
-		{
-			var result = new Result<User>();
-			try
-			{
-				var existingUser = await _userDAO.getUserByEmailAsync(model.Email);
-				if (existingUser != null)
-				{
-					result.Success = false;
-					result.ErrorMessage = "Email already exists.";
-					return result;
-				}
+                result.Success = true;
+                result.Data = user;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.ErrorMessage = "Something wrong!!";
+                return result;
+            }
 
-				var user = _mapper.Map<User>(model);
-				if (model.Password != null)
-				{                    
+            return result;
+        }
+
+        public async Task<Result<User>> SignUp(RegisterVM model)
+        {
+            var result = new Result<User>();
+            try
+            {
+                var existingUser = await _userDAO.getUserByEmailAsync(model.Email);
+                if (existingUser != null)
+                {
+                    result.Success = false;
+                    result.ErrorMessage = "Email already exists.";
+                    return result;
+                }
+
+                var user = _mapper.Map<User>(model);
+                if (model.Password != null)
+                {
                     user.Password = model.Password.ToMd5Hash(user.RandomKey);
                 }
                 user.RandomKey = MyUtil.GenerateRamdomKey();
                 user.RoleId = 2;
-				user.Status = true;
-				user.IsGoogleAccount = false;
-				user.IsFacebookAccount = false;
-				await _userDAO.AddUserAsync(user);
-				result.Success = true;
-				result.Data= user;
-			}
-			catch (Exception ex)
-			{
-				result.Success = false;
-				result.ErrorMessage = "Something is wrong!!";
-				return result;
-			}
+                user.Status = true;
+                user.IsGoogleAccount = false;
+                user.IsFacebookAccount = false;
+                await _userDAO.AddUserAsync(user);
+                result.Success = true;
+                result.Data = user;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.ErrorMessage = "Something is wrong!!";
+                return result;
+            }
 
-			return result;
-		}
-	}
+            return result;
+        }
+        #endregion
+    }
 
 }

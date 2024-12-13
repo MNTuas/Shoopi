@@ -18,10 +18,14 @@ namespace DAO.ViewModels
     {
         public int OrderId { get; set; }
         public string FullName { get; set; }
+        public string Email { get; set; }
         public string MethodPayment { get; set; }
         public string PhoneNumber { get; set; }
         public string OrderStatus { get; set; }
         public decimal TotalPrice { get; set; }
+        public DateOnly? CreateDate { get; set; }
+        public string Address { get; set; }
+        public string Note { get; set; }
 
         public List<OrderDetailViewModel> OrderDetails { get; set; } = new List<OrderDetailViewModel>();
     }

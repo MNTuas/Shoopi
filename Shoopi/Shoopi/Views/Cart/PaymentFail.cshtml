@@ -95,9 +95,16 @@
                     <h1 class="text-danger mt-3 fw-bold animate-fade-in">Payment Fail</h1>
                     <!-- Message -->
                     <h3 class="text-warning animate-fade-in">@TempData["Message"]</h3>
-                    <!-- Button -->
+
+                    <!-- Button: Centered link styled as button -->
+                    <div class="mt-4">
+                        <a asp-controller="Order" asp-action="Index" class="btn btn-primary">Check your order</a>
+                    </div>
+
+                    <!-- Retry button -->
                     <a href="/" class="btn btn-secondary mt-3 animate-slide-in">Try Again</a>
                 </div>
+
             </div>
         </div>
     </div>

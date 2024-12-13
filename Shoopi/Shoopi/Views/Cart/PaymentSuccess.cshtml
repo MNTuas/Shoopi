@@ -88,6 +88,10 @@
                     <h1 class="text-primary mt-3 fw-bold animate-fade-in">Payment Success</h1>
                     <!-- Message -->
                     <h3 class="text-danger animate-fade-in">@TempData["Message"]</h3>
+                    <!-- Button: Centered link styled as button -->
+                    <div class="mt-4">
+                        <a asp-controller="Order" asp-action="Index" class="btn btn-primary">Check your order</a>
+                    </div>
                     <!-- Button -->
                     <a href="/" class="btn btn-primary mt-3 animate-slide-in">Go Back to Home</a>
                 </div>

@@ -25,9 +25,13 @@ namespace Repository
             _httpContextAccessor = httpContextAccessor;
         }
 
-		public async Task<Order?> GetOrderById(int id)
+		public async Task<OrderViewModel?> GetOrderById(int id)
 		{
-			return await _orderDAO.GetOrderById(id);
+		
+			var orders = await _orderDAO.GetOrderById(id);
+
+			return _mapper.Map<OrderViewModel>(orders);
+
 		}
 
         public async Task<OrderResponse> GetOrderByUserLogin(int userId, int? type, string query, int pageIndex, int pageSize)

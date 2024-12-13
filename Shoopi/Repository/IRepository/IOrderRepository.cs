@@ -10,7 +10,7 @@ namespace Repository.IRepository
 {
 	public interface IOrderRepository
 	{
-		Task<Order> GetOrderById(int id);
+		Task<OrderViewModel> GetOrderById(int id);
 		Task<OrderResponse> GetOrders(int? type, string query, int pageIndex, int pageSize);
 		Task<OrderResponse> GetOrderByUserLogin(int userId, int? type, string query, int pageIndex, int pageSize);
 
