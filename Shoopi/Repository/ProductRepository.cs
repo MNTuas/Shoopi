@@ -1,12 +1,12 @@
 ﻿using DAO;
 using Repository.IRepository;
 using DAO.Data;
-using DAO.ViewModels;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using DAO.ViewModels.Response;
 
 namespace Repository
 {
-	public class ProductRepository : IProductRepository
+    public class ProductRepository : IProductRepository
 	{
 		private readonly ProductDAO _productDAO;
 

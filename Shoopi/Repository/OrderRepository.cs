@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DAO;
 using DAO.Data;
-using DAO.ViewModels;
+using DAO.ViewModels.Response;
 using Microsoft.AspNetCore.Http;
 using Repository.IRepository;
 using System;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-	public class OrderRepository : IOrderRepository
+    public class OrderRepository : IOrderRepository
 	{
 		private readonly OrderDAO _orderDAO;
         private readonly IMapper _mapper;

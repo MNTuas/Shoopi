@@ -1,4 +1,4 @@
-﻿using DAO.ViewModels;
+﻿using DAO.ViewModels.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Repository.Helpers;

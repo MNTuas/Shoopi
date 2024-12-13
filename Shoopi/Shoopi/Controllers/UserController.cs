@@ -17,6 +17,12 @@ namespace Shoopi.Controllers
 {
     public class UserController : Controller
     {
+
+        [BindProperty(SupportsGet = true)]
+        public int PageIndex { get; set; } = 1;
+        public int PageSize { get; set; } = 3;
+        public int TotalPages { get; set; }
+
         private readonly IUserRepository _userRepository;
         private readonly Shoopi1Context _context;
 
@@ -26,11 +32,16 @@ namespace Shoopi.Controllers
             _context = context;
         }
 
+        public IList<User> Users { get; set; } = default!;
 
         [ShoopiAuthorizedAddtribute("Admin", "Allowed")] //authorize
-        public async Task<IActionResult> GetUser()
+        public async Task<IActionResult> GetUser( string query, int PageIndex = 1)
         {
-            var result = await _userRepository.GetAllUser();
+            var result = await _userRepository.GetAllUser( query, PageIndex, 8);
+            Users = result.Users;
+            PageIndex = result.PageIndex;
+            TotalPages = result.TotalPages;
+
             return View(result);
         }
 

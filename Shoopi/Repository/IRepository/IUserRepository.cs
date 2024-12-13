@@ -1,6 +1,7 @@
 ﻿using DAO.Data;
 using DAO.ViewModels;
 using DAO.ViewModels.Request;
+using DAO.ViewModels.Response;
 using Repository.Helpers.Response;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Repository.IRepository
 	{
 		Task<Result<User>> Login(LoginVM model);
 		Task<Result<User>> SignUp(RegisterVM model);
-		Task<List<User>> GetAllUser();
+		Task<UserResponse> GetAllUser( string query, int pageIndex, int pageSize);
 		Task<User?> getUserByEmailAsync(string email);
 		Task<User?> getUserByIdlAsync(int id);
 		Task<User?> getUserByLogin(int userId);

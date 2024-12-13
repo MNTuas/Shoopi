@@ -3,6 +3,7 @@ using DAO;
 using DAO.Data;
 using DAO.ViewModels;
 using DAO.ViewModels.Request;
+using DAO.ViewModels.Response;
 using Microsoft.EntityFrameworkCore;
 using Repository.Helpers;
 using Repository.Helpers.Response;
@@ -23,9 +24,35 @@ namespace Repository
 			_context = context;
 		}
 
-        public Task<List<User>> GetAllUser()
+        public async Task<UserResponse> GetAllUser(string query, int pageIndex, int pageSize)
         {
-            return _userDAO.GetAllUser();
+            try
+            {
+                var users = await _userDAO.GetAllUser();
+
+                if (!string.IsNullOrEmpty(query))
+                {
+                    users = users.Where(p => p.FullName.Contains(query)).ToList();
+                }
+                
+                //paging
+                var count = users.Count;
+                var totalPages = (int)Math.Ceiling(count / (double)pageSize);
+
+                var pagedUsers = users.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+
+                return new UserResponse
+                {
+                    Users = pagedUsers,
+                    TotalPages = totalPages,
+                    PageIndex = pageIndex
+                };
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public Task<User?> getUserByEmailAsync(string email)
@@ -122,6 +149,8 @@ namespace Repository
 
             return result;
         }
+
+        
         #endregion
     }
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAO.ViewModels
+namespace DAO.ViewModels.Response
 {
     public class OrderResponse
     {
