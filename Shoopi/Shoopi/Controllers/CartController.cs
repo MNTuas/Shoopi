@@ -111,7 +111,7 @@ namespace Shoopi.wwwroot
 
         [Authorize]
         [HttpPost]
-		public IActionResult CheckOut(CheckoutVM model, string payment = "VnPay")
+		public IActionResult CheckOut(CheckoutVM model, string MethodPayment = "COD")
 		{
 			if (!ModelState.IsValid)
 			{
@@ -150,7 +150,9 @@ namespace Shoopi.wwwroot
 				CreateDate = DateOnly.FromDateTime(DateTime.Now),
 				MethodPayment = model.MethodPayment,
 				Note = model.Note,
-				OrderStatusId = 1
+				OrderStatusId = 1,
+				TotalPrice = Cart.Sum(p => p.Price * p.Quantity)
+
 			};
 
 			using var transaction = _context.Database.BeginTransaction();
@@ -187,7 +189,7 @@ namespace Shoopi.wwwroot
 				_context.SaveChanges();
 
 				// Xử lý thanh toán VNPay
-				if (payment.Trim() == "VnPay")
+				if (MethodPayment == "VNPay")
 				{
 					var vnPayModel = new VnPaymentRequestModel
 					{

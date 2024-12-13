@@ -121,7 +121,7 @@
                                     <a>Welcome @Context.User.Identity.Name</a>
                                     <ul class="sub-menu">
                                         <li><a asp-action="Index" asp-controller="Product">Information</a></li>
-                                        <li><a href="checkout.html">Check Your Order</a></li>
+                                        <li><a asp-action="Index" asp-controller="Order">Check Your Order</a></li>
                                         <li><a asp-action="LogOut" asp-controller="User">LogOut</a></li>
                                     </ul>
                                 </li>

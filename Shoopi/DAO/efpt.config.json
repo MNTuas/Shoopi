@@ -1,12 +1,12 @@
 ﻿{
    "CodeGenerationMode": 4,
-   "ContextClassName": "shoopiContext",
+   "ContextClassName": "Shoopi1Context",
    "ContextNamespace": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
    "ModelNamespace": null,
    "OutputContextPath": null,
-   "OutputPath": "DATA",
+   "OutputPath": "Data",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "DAO",
    "Schemas": null,
@@ -44,6 +44,10 @@
       },
       {
          "Name": "[dbo].[User]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserLogin]",
          "ObjectType": 0
       }
    ],
