@@ -1,4 +1,4 @@
-﻿using DAO.ViewModels;
+﻿using DAO.ViewModels.Response;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;

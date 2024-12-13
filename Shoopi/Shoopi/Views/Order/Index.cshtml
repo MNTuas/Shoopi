@@ -1,4 +1,5 @@
-﻿@model DAO.ViewModels.OrderResponse
+﻿@using DAO.ViewModels.Response
+@model OrderResponse
 @{
 
     ViewData["Title"] = "Index";
@@ -107,7 +108,7 @@
         <div id="orderlist" class="order-card">
             <div class="order-content">
                 <div class="order-header">
-                    <span class="order-id">Order #@order.OrderId</span>
+                    <span class="order-id">Order #@order.OrderId - @order.CreateDate</span>
                     <div style="color: red">@order.OrderStatus</div>
                 </div>
 
@@ -130,9 +131,10 @@
                         </div>
                     </div>
 
-                    <button class="view-details-btn" data-bs-toggle="collapse" data-bs-target="#order-details-@order.OrderId" aria-expanded="false" aria-controls="order-details-@order.OrderId">
+                    <a asp-action="OrderDetail" asp-controller="Order" asp-route-id="@order.OrderId" class="view-details-btn">
                         View Details
-                    </button>
+                    </a>
+
                 </div>
             </div>
         </div>

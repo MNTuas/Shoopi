@@ -2,6 +2,7 @@
 using AutoMapper;
 using DAO.Data;
 using DAO.ViewModels;
+using DAO.ViewModels.Request;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -24,31 +25,49 @@ namespace DAO
             _mapper = mapper;
         }
 
-
-        #region SignUp
         public async Task AddUserAsync(User user)
         {
             _context.Users.Add(user);
 			await _context.SaveChangesAsync();
         }
-        #endregion
-
-        #region Login
-
-       public async Task<User?> getUserByEmailAsync(string email)
+        
+        public async Task<User?> getUserByEmailAsync(string email)
         {
             return await _context.Users.FirstOrDefaultAsync(p => p.Email == email);
         }
-
-        #endregion
-
+        
         public async Task<List<User>> GetAllUser()
         {
             return await _context.Users.Include(p => p.Role).OrderBy(p => p.RoleId).ToListAsync();
         }
+        
         public async Task<User?> getUserByIdlAsync(int id)
         {
             return await _context.Users.FirstOrDefaultAsync(p => p.UserId == id);
+        }
+
+        public async Task<User?> getUserByLogin(int userId)
+        {
+            return await _context.Users.FirstOrDefaultAsync(x => x.UserId == userId);   
+        }
+
+        public async Task<User?> UpdateUser(int userId, UserUpdateRequest userUpdateRequest)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync( x => x.UserId == userId);
+            if (user == null)
+            {
+                return null;
+            }
+
+            // Update the user's properties with the new values from the request
+            user.FullName = userUpdateRequest.FullName;
+            user.Address = userUpdateRequest.Address;
+            user.PhoneNumber = userUpdateRequest.PhoneNumber;
+            user.Birthday = userUpdateRequest.Birthday;
+            user.Gender = userUpdateRequest.Gender;
+
+            await _context.SaveChangesAsync();
+            return user;
         }
     }
 }

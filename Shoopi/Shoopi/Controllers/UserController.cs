@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DAO.Data;
 using DAO.ViewModels;
+using DAO.ViewModels.Request;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -16,22 +17,35 @@ namespace Shoopi.Controllers
 {
     public class UserController : Controller
     {
+
+        [BindProperty(SupportsGet = true)]
+        public int PageIndex { get; set; } = 1;
+        public int PageSize { get; set; } = 3;
+        public int TotalPages { get; set; }
+
         private readonly IUserRepository _userRepository;
         private readonly Shoopi1Context _context;
 
         public UserController(IUserRepository user, Shoopi1Context context)
         {
-			_userRepository = user;
+            _userRepository = user;
             _context = context;
         }
 
-        
-        [ShoopiAuthorizedAddtribute("Admin","Allowed")] //authorize
-        public async Task<IActionResult> GetUser()
+        public IList<User> Users { get; set; } = default!;
+
+        [ShoopiAuthorizedAddtribute("Admin", "Allowed")] //authorize
+        public async Task<IActionResult> GetUser( string query, int PageIndex = 1)
         {
-            var result = await _userRepository.GetAllUser();
-            return  View(result);
+            var result = await _userRepository.GetAllUser( query, PageIndex, 8);
+            Users = result.Users;
+            PageIndex = result.PageIndex;
+            TotalPages = result.TotalPages;
+
+            return View(result);
         }
+
+        #region AUTHORIZE SERVICE
 
         public IActionResult SignUp()
         {
@@ -52,7 +66,7 @@ namespace Shoopi.Controllers
                 {
                     ViewBag.ErrorMessage = result.ErrorMessage;
                     return View(model);
-                }              
+                }
             }
             return View(model);
         }
@@ -60,7 +74,7 @@ namespace Shoopi.Controllers
         [HttpGet]
         public IActionResult Login(string? ReturnUrl) //tra ve url neu  
         {
-            ViewBag.ReturnUrl = ReturnUrl; 
+            ViewBag.ReturnUrl = ReturnUrl;
             return View();
         }
 
@@ -71,11 +85,11 @@ namespace Shoopi.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userRepository.Login(model);
-				string rolename = string.Empty;
-				if (model.RoleId == 1)
-					rolename = "Admin";
-				else rolename = "User";
-				if (user.Success)
+                string rolename = string.Empty;
+                if (model.RoleId == 1)
+                    rolename = "Admin";
+                else rolename = "User";
+                if (user.Success)
                 {
                     var claims = new List<Claim> {
                                 new Claim(ClaimTypes.Email, model.Email),
@@ -109,13 +123,13 @@ namespace Shoopi.Controllers
                 else
                 {
                     ViewBag.ErrorMessage = user.ErrorMessage;
-                    return View(model);  
+                    return View(model);
                 }
-               
+
             }
             return View();
         }
-       
+
         public async Task LoginByGoogle()
         {
             await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new AuthenticationProperties
@@ -130,7 +144,7 @@ namespace Shoopi.Controllers
             var authenticateResult = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             if (!authenticateResult.Succeeded || authenticateResult.Principal == null)
             {
-               
+
                 return RedirectToAction("Login", "User");
             }
 
@@ -138,7 +152,7 @@ namespace Shoopi.Controllers
             var googleClaims = authenticateResult.Principal.Identities.FirstOrDefault()?.Claims.ToList();
             if (googleClaims == null)
             {
-               
+
                 return RedirectToAction("Error", "Home");
             }
 
@@ -158,11 +172,11 @@ namespace Shoopi.Controllers
             //nếu ko có user trong dtb thì tạo 1 user mới 
             if (existingUser == null)
             {
-                
+
                 var newUser = new RegisterVM
                 {
                     Email = email,
-                    FullName = name ?? "Default Name" 
+                    FullName = name ?? "Default Name"
                 };
 
                 using var transaction = await _context.Database.BeginTransactionAsync();
@@ -208,14 +222,14 @@ namespace Shoopi.Controllers
                 catch (Exception ex)
                 {
                     await transaction.RollbackAsync();
-                   
+
                 }
             }
 
             //nếu có user tồn tại thì lấy userid từ existinguser
             else
             {
-                if(existingUser.IsGoogleAccount == false) 
+                if (existingUser.IsGoogleAccount == false)
                 {
                     existingUser.IsGoogleAccount = true;
                     _context.Update(existingUser);
@@ -253,7 +267,7 @@ namespace Shoopi.Controllers
             // Redirect to the home page
             return RedirectToAction("Index", "Home");
         }
-        
+
         [Authorize]
         public async Task<IActionResult> LogOut()
         {
@@ -261,5 +275,41 @@ namespace Shoopi.Controllers
             return RedirectToAction("Index", "Home");
 
         }
+        #endregion
+
+        [Authorize]
+        public async Task<IActionResult> GetUserByLogin()
+        {
+            // Lấy thông tin từ claim
+            var userId = int.Parse(HttpContext.User.Claims
+                .SingleOrDefault(p => p.Type == MySetting.CLAIM_CUSTOMERID)?.Value);
+
+            var result = await _userRepository.getUserByLogin(userId);
+            if (result == null)
+            {
+                TempData["NoUser"] = "Not Found";
+            }
+            return View(result);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> UpdateUser(UserUpdateRequest userUpdateRequest)
+        {
+            // Lấy thông tin từ claim
+            var userId = int.Parse(HttpContext.User.Claims
+                .SingleOrDefault(p => p.Type == MySetting.CLAIM_CUSTOMERID)?.Value);
+
+            var result = await _userRepository.UpdateUser(userId, userUpdateRequest);
+            if (result == null)
+            {
+                TempData["NoUser"] = "Not Found";
+                return RedirectToAction("Profile", "User");
+            }
+
+            TempData["SuccessMessage"] = "Update successfull";
+            // Cập nhật thành công, chuyển hướng và tải lại dữ liệu
+            return RedirectToAction("GetUserByLogin", "User", new { userId = userId });
+        }
+
     }
 }

@@ -1,5 +1,5 @@
 ﻿using DAO.Data;
-using DAO.ViewModels;
+using DAO.ViewModels.Response;
 using Shoopi.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using static DAO.ProductDAO;
 
 namespace Repository.IRepository
 {
-	public interface IProductRepository
+    public interface IProductRepository
 	{
 
 		Task<Product> GetProductById(int id);

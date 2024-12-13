@@ -19,6 +19,7 @@ namespace Shoopi.Controllers
 		{
             _orderRepository = Order;
 		}
+		
 		public IList<Order> Orders { get; set; } = default!;
 
 		[Authorize]
@@ -38,8 +39,6 @@ namespace Shoopi.Controllers
 
 			return View(result);
 		}
-
-
         
 		[Authorize]
         public async Task<IActionResult> OrderDetail(int id)
@@ -56,5 +55,7 @@ namespace Shoopi.Controllers
 			return View(Orders);
 		}
 
-	}
+		
+
+    }
 }
