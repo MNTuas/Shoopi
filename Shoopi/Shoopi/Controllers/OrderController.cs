@@ -55,7 +55,27 @@ namespace Shoopi.Controllers
 			return View(Orders);
 		}
 
-		
+        [ShoopiAuthorizedAddtribute("Admin", "Allowed")]
+        public async Task<IActionResult> GetUserOrder(int id, int? type, string query, int PageIndex = 1)
+        {
+            if (id == 0)
+            {
+                TempDataHelper.AddNotification(TempData, "Error", "ID not found");
+				return View("/404");
+            }
+
+            var result = await _orderRepository.GetOrderByUserLogin(id, type, query, PageIndex, 6);
+            if (!result.Orders.Any())
+            {
+                TempDataHelper.AddNotification(TempData, "Warning", "User doesn't have any orders.");
+            }
+
+            PageIndex = result.PageIndex;
+            TotalPages = result.TotalPages;
+
+            return View(result);
+        }
+
 
     }
 }

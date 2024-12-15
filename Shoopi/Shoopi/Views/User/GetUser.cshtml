@@ -41,7 +41,7 @@
                             <td>@user.Email</td>
                             <td><span class="badge badge-success">Active</span></td>
                             <td>
-                                <a href="#" class="btn btn-sm btn-warning">View Orders</a>
+                                <a asp-action="GetUserOrder" asp-controller="Order" asp-route-id="@user.UserId" class="btn btn-sm btn-warning">View Orders</a>
                             </td>
                         </tr>
                     }
