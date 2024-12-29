@@ -11527,15 +11527,17 @@
 					<hr class="mb-4">
 					<h4 style="color: #f28123;" class="mb-3">Payment</h4>
 					<div class="d-block my-3">
+						<!--COD-->
 						<div class="custom-control custom-radio cod">
-							<input value="COD"  id="cod" name="MethodPayment" type="radio" class="custom-control-input">
+							<input value="COD"  id="cod" name="MethodPayment" type="radio" class="custom-control-input" checked>
 							<label class="custom-control-label" for="cod">COD</label>
 						</div>
-						<!--vnpay-->
+						<!--VNPay-->
 						<div class="custom-control custom-radio ">
 							<input value="VNPay" id="vnpay" name="MethodPayment" type="radio" class="custom-control-input" >
 							<label class="custom-control-label" for="vnpay">VNPay</label>
 						</div>
+						<!--Paypal-->
 						<div class="custom-control custom-radio">
 							<input value="Paypal" id="paypal" name="MethodPayment" type="radio" class="custom-control-input">
 							<label class="custom-control-label" for="paypal">PayPal</label>
@@ -11578,7 +11580,12 @@
 					</div>
 					<hr class="mb-4">
 
-					<button id="btnvnpay" type="submit" name="payment" class="btn btn-primary btn-lg btn-block" >VNPay</button>
+					<button id="btnvnpay" type="submit" name="payment" class="btn btn-primary btn-lg btn-block">
+						<img src="data:image/png;base64,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"
+							 alt="VNPay Logo" style="width: 20px; height: 20px; margin-right: 8px;">
+						VNPay
+					</button>
+
 					<button id="btncheckout" class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
 				
 			</div>
@@ -11614,6 +11621,13 @@
 	//xu li payment menthod
 	$(document).ready(function () {
 		//add là ẩn , remove là hiện lại
+		
+		//đang để cod là checked nên mỗi lần load trang là ẩn lun
+		if ($("#cod").prop("checked")) {
+        $(".payment").addClass("d-none");
+        $("#btnvnpay").addClass("d-none"); 
+        $("#btncheckout").removeClass("d-none");
+    }
 		//xử lý cod
 		$("#cod").change(function () {
 			if ($(this).prop("checked")) {
@@ -11628,6 +11642,7 @@
 			if ($(this).prop("checked")) {
 				$("#btnvnpay").removeClass("d-none");
 				$("#btncheckout").addClass("d-none");
+				$(".payment").addClass("d-none");
 			}
 		});
 
