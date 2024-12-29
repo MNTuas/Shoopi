@@ -14,12 +14,15 @@ namespace DAO
 
 		public async Task<List<Product>> GetAllProductsAsync()
 		{
-			return await _context.Products.ToListAsync();
+			return await _context.Products.Include(x => x.OrderDetails).ToListAsync();
 		}
 
 		public async Task<Product?> GetProductById(int id)
 		{
-			return await _context.Products.Include(x => x.Type).FirstOrDefaultAsync(p => p.ProductId == id);
+			return await _context.Products
+				.Include(x => x.Type)
+				.Include(x => x.OrderDetails)
+				.FirstOrDefaultAsync(p => p.ProductId == id);
 		}
 	}
 }

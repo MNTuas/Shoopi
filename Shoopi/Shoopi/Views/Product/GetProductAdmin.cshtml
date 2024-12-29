@@ -1,0 +1,70 @@
+﻿@using DAO.ViewModels.Response
+@model ProductResponse
+@{
+    ViewData["Title"] = "Product Management";
+}
+
+<div style="margin-left: 300px; " class="container mt-2">
+    <div class="card">
+        <div class="card-header text-black d-flex justify-content-between align-items-center">
+            <h4>Product Management</h4>
+            <div>
+                <a href="#" class="btn btn-light btn-sm">Add New product</a>
+                <a href="#" class="btn btn-light btn-sm">Export to Excel</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light text-center">
+                    <tr>
+                        <th>Picture</th>
+                        <th>FullName</th>
+                        <th>Quantity(left)</th>
+                        <th>Price</th>
+                        <th>ViewNumber</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model.Products)
+                    {
+                        <tr class="text-center">
+                            <td>
+                                <img src="~/assets/img/3aadf6f3d5f31097027574351e0b0b75.jpg" class="rounded" style="width: 30px; height: 30px; object-fit: cover; margin-right: 8px;" alt="Avatar">
+                            </td>
+                            <td class="text-center">                               
+                                @product.ProductName
+                            </td>
+                            <td>@product.Quantity</td>
+                            <td>@(Convert.ToDecimal(product.Price).ToString("N0")) VND</td>
+                            <td>@product.ViewNumber</td>
+                            <td>
+                                <a asp-action="GetproductOrder" asp-controller="Order" asp-route-id="@product.ProductId" class="btn btn-sm btn-warning">View detail</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="pagination-wrap d-flex justify-content-center" id="pagination">
+                    <ul class="pagination">
+                        <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                            <a class="page-link" asp-controller="product" asp-route-pageIndex="@(Model.PageIndex - 1)">Prev</a>
+                        </li>
+                        @for (var i = 1; i <= Model.TotalPages; i++)
+                        {
+                            <li class="page-item @(Model.PageIndex == i ? "active" : "")">
+                                <a class="page-link" asp-controller="product" asp-route-pageIndex="@i">@i</a>
+                            </li>
+                        }
+                        <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                            <a class="page-link" asp-controller="product" asp-route-pageIndex="@(Model.PageIndex + 1)">Next</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

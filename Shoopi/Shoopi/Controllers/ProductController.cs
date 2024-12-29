@@ -18,6 +18,7 @@ namespace Shoopi.Controllers
             _product = product;
 		}
 		public IList<Product> Products { get; set; } = default!;
+		
 		public async Task<IActionResult> Index(int? type, string query, int PageIndex = 1)
 		{
 			var result = await _product.GetProducts(type, query, PageIndex, 6);
@@ -41,6 +42,16 @@ namespace Shoopi.Controllers
 			}
 			return View(products);
 		}
-		
+
+        public async Task<IActionResult> GetProductAdmin(int? type, string query, int PageIndex = 1)
+        {
+            var result = await _product.GetProducts(type, query, PageIndex, 6);
+            Products = result.Products;
+            PageIndex = result.PageIndex;
+            TotalPages = result.TotalPages;
+
+            return View(result);
+        }
+
     }
 }

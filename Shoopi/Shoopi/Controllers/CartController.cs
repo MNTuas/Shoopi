@@ -165,17 +165,17 @@ namespace Shoopi.wwwroot
 				_context.SaveChanges();
 
 				// Cập nhật số lượng sản phẩm
-				foreach (var pr in Cart)
-				{
-					var product = _context.Products.SingleOrDefault(p => p.ProductId == pr.ProductID);
-					if (product == null || product.Quantity < pr.Quantity)
-					{
-						throw new Exception($"Sản phẩm {pr.ProductID} không đủ số lượng.");
-					}
-					product.Quantity -= pr.Quantity;
-					_context.Update(product);
-				}
-				_context.SaveChanges();
+				//foreach (var pr in Cart)
+				//{
+				//	var product = _context.Products.SingleOrDefault(p => p.ProductId == pr.ProductID);
+				//	if (product == null || product.Quantity < pr.Quantity)
+				//	{
+				//		throw new Exception($"Sản phẩm {pr.ProductID} không đủ số lượng.");
+				//	}
+				//	product.Quantity -= pr.Quantity;
+				//	_context.Update(product);
+				//}
+				//_context.SaveChanges();
 
 				// Thêm thông tin chi tiết đơn hàng
 				var orderDetails = Cart.Select(item => new OrderDetail

@@ -132,10 +132,24 @@
                                 </div>
                             </li>
                           
-                            <a class="nav-link" aria-controls="submenu-2"><i >
+                            <!--PRODUCT MANAGEMENT-->
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-3">
+                                    <i class="fa fa-fw fa-rocket">
 
-                            </i>PRODUCT MANAGEMENT</a>
-                            </a>
+                                    </i>PRODUCT 
+                                </a>
+                                <div id="submenu-3" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="GetProductAdmin" asp-controller="Product">Product Information</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="pages/general.html">General</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
                     </div>
             </div>
 
