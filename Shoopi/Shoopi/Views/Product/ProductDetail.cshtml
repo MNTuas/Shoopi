@@ -30,7 +30,7 @@
 			<div class="col-md-7">
 				<div class="single-product-content">
 					<h3>@Model.ProductName</h3>
-					<p class="single-product-pricing"><span>Per Kg</span> @Model.Price</p>
+					<p class="single-product-pricing"><span>Per Kg/</span>@(Convert.ToDecimal(Model.Price).ToString("N0")) VND</p>
 					<p>@Model.Detail</p>
 					<div class="single-product-form">
 
